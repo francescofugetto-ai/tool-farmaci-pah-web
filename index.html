@@ -1,0 +1,1468 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tool Farmaci PAH">
+<meta name="theme-color" content="#FAF9F7">
+<script data-iphone="sentinella">
+(function(){
+var h=document.documentElement, msg="";
+function ha(c){ return (" "+h.className+" ").indexOf(" "+c+" ")>=0; }
+// L'errore puo' arrivare prima che l'avviso esista — uno script in <head> che
+// non si lascia leggere —: il messaggio si tiene da parte e si scrive quando
+// la pagina c'e'.
+function scrivi(){
+  var e=document.getElementById("nmerr");
+  if(e&&msg) e.textContent="Errore del motore: "+msg;
+}
+function ko(m){
+  if(m&&!msg) msg=m;
+  if(!ha("motore-ko")) h.className+=" motore-ko";
+  scrivi();
+}
+h.className+=" js";
+window.onerror=function(m,src,riga,col){
+  m=String(m);
+  if(/^Script error\.?$/.test(m)) m="il browser non ne mostra il dettaglio (\u00abScript error.\u00bb)";
+  ko(m+(riga?" (riga "+riga+(col?", colonna "+col:"")+")":""));
+};
+document.addEventListener("DOMContentLoaded",function(){
+  if(!ha("motore-ok")) ko(msg||"il motore non ha completato l'avvio"); else scrivi();
+});
+})();
+</script>
+<title>Farmaci della PAH — dose, rene, fegato, interazioni, bambino</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --bg:#FAF9F7; --surface:#FFFFFF; --surface-alt:#F3F2EF;
+    --border:rgba(11,11,11,0.10); --border-strong:rgba(11,11,11,0.18);
+    --text-primary:#0B0B0B; --text-secondary:#52514E; --text-muted:#76746F;
+    --accent-blue:#2A78D6;   --accent-blue-bg:#E6F1FB;   --accent-blue-border:#B5D4F4;
+    --accent-amber:#BA7517;  --accent-amber-bg:#FAEEDA;  --accent-amber-border:#FAC775;
+    --accent-red:#A32D2D;    --accent-red-bg:#FCEBEB;    --accent-red-border:#F7C1C1;
+    --accent-green:#3B6D11;  --accent-green-bg:#EAF3DE;  --accent-green-border:#C0DD97;
+    --k0:#2E7D4F; --k0-bg:#E2F3E8; --k0-bd:#A6D9B8;
+    --k1:#2A78D6; --k1-bg:#E3EFFB; --k1-bd:#A9CBF1;
+    --k2:#8A6A00; --k2-bg:#FBF3C8; --k2-bd:#EBD56C;
+    --k3:#B45309; --k3-bg:#FDEBD8; --k3-bd:#F4BD85;
+    --k4:#A32D2D; --k4-bg:#FCE3E3; --k4-bd:#F0A9A9;
+    --cor-1:#3B8E5A; --cor-2a:#E0A82E; --cor-2b:#DE7E3C; --cor-3:#B33A3A;
+    --grid:rgba(42,120,214,.08);
+    --font:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    --display:'IBM Plex Sans Condensed','Arial Narrow',-apple-system,'Segoe UI',sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,Consolas,'Courier New',monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#111418; --surface:#181C22; --surface-alt:#20252D;
+      --border:rgba(255,255,255,.10); --border-strong:rgba(255,255,255,.19);
+      --text-primary:#E7EAEE; --text-secondary:#B8BEC7; --text-muted:#949BA5;
+      --accent-blue:#72AAEE;   --accent-blue-bg:#18283A;   --accent-blue-border:#2E4B6C;
+      --accent-amber:#E3A94F;  --accent-amber-bg:#30250F;  --accent-amber-border:#5D4719;
+      --accent-red:#EF8E8E;    --accent-red-bg:#361B1B;    --accent-red-border:#6B3232;
+      --accent-green:#95C873;  --accent-green-bg:#1C2A13;  --accent-green-border:#3C5626;
+      --k0:#8FD3A8; --k0-bg:#132B1D; --k0-bd:#2D5A3E;
+      --k1:#8EC0F5; --k1-bg:#16283C; --k1-bd:#2F5378;
+      --k2:#EDD36A; --k2-bg:#2C260C; --k2-bd:#5E5120;
+      --k3:#F3B27A; --k3-bg:#33210F; --k3-bd:#6B4524;
+      --k4:#F29A9A; --k4-bg:#361B1B; --k4-bd:#6B3232;
+      --grid:rgba(114,170,238,.07);
+      color-scheme:dark;
+    }
+  }
+  body { font-family:var(--font); background:var(--bg); color:var(--text-primary); font-size:14.5px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  .page { max-width:960px; margin:0 auto; padding:0 16px 4rem; }
+  strong, b { font-weight:600; }
+  .hero { margin:0 -16px 0; padding:2.2rem 16px 1.3rem; border-bottom:1px solid var(--border);
+          background-color:var(--bg);
+          background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+          background-size:22px 22px; }
+  .kicker { font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--accent-blue); margin-bottom:8px; }
+  .headline { font-family:var(--display); font-size:30px; font-weight:700; line-height:1.12; margin-bottom:10px; }
+  .lede { font-size:14.5px; color:var(--text-secondary); max-width:760px; margin-bottom:12px; }
+  .lede strong { color:var(--text-primary); }
+  .meta-row { display:flex; flex-wrap:wrap; gap:6px 8px; font-size:12px; }
+  .meta-chip { background:var(--surface); border:1px solid var(--border-strong); border-radius:99px; padding:2px 10px; color:var(--text-secondary); overflow-wrap:anywhere; }
+  .meta-chip strong { color:var(--text-primary); }
+  .bar { position:-webkit-sticky;position:sticky; top:0; z-index:30; background:var(--bg); border-bottom:1px solid var(--border-strong);
+         margin:0 -16px 1.2rem; padding:8px 16px; display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; }
+  .bar .lbl { font-family:var(--mono); font-size:10.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); }
+  .bar .sp { flex:1 1 auto; }
+  .btn { font:600 12.5px var(--font); padding:6px 13px; border-radius:99px; border:1px solid var(--border-strong); background:var(--surface); color:var(--text-secondary); cursor:pointer; }
+  .btn:hover { border-color:var(--accent-blue); color:var(--accent-blue); }
+  .stage { display:flex; align-items:baseline; gap:10px; margin:2rem 0 .7rem; padding-bottom:6px; border-bottom:2px solid var(--border-strong); }
+  .stage-n { font-family:var(--mono); font-size:12px; font-weight:600; color:#FFFFFF; background:var(--accent-blue); border-radius:6px; padding:1px 7px; }
+  .stage-t { font-family:var(--display); font-size:20px; font-weight:700; line-height:1.2; }
+  .stage-w { margin-left:auto; font-size:11.5px; color:var(--text-muted); text-align:right; }
+  .card { background:var(--surface); border:1px solid var(--border-strong); border-radius:12px; padding:14px 16px; margin-bottom:12px; }
+  .card h3 { font-size:13px; font-weight:600; letter-spacing:.02em; margin-bottom:8px; color:var(--text-secondary); }
+  .fl { font-size:12.5px; font-weight:600; color:var(--text-secondary); min-width:150px; }
+  .fl small { display:block; font-weight:400; color:var(--text-muted); font-size:11.5px; }
+  input[type=number] { font:500 15px var(--font); color:var(--text-primary); background:var(--surface); border:1px solid var(--border-strong); border-radius:8px; padding:6px 9px; width:92px; text-align:center; }
+  select { font:500 13.5px var(--font); color:var(--text-primary); background:var(--surface); border:1px solid var(--border-strong); border-radius:8px; padding:6px 8px; max-width:100%; min-width:0; }
+  .seg { display:inline-flex; flex-wrap:wrap; border:1px solid var(--border-strong); border-radius:10px; overflow:hidden; max-width:100%; }
+  .seg label { position:relative; cursor:pointer; }
+  .seg input { position:absolute; opacity:0; width:1px; height:1px; }
+  .seg span { display:block; padding:6px 12px; font-size:13.5px; font-weight:500; color:var(--text-secondary); border-right:1px solid var(--border); }
+  .seg label:last-child span { border-right:none; }
+  .seg input:checked + span { background:var(--text-primary); color:var(--bg); }
+  .seg input:focus-visible + span { outline:2px solid var(--accent-blue); outline-offset:-2px; }
+  .riga { display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; padding:6px 0; border-bottom:1px dashed var(--border); }
+  .riga:last-child { border-bottom:none; }
+  .riga .fl { min-width:0; flex:1 1 180px; }
+  .riga select { flex:1 1 260px; }
+  .hide { display:none !important; }
+  .esito { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; margin-bottom:4px; }
+  .cat { display:inline-block; font-size:12.5px; font-weight:600; border-radius:99px; padding:2px 10px; border:1px solid; }
+  .k0 { color:var(--k0); background:var(--k0-bg); border-color:var(--k0-bd); }
+  .k1 { color:var(--k1); background:var(--k1-bg); border-color:var(--k1-bd); }
+  .k3 { color:var(--k3); background:var(--k3-bg); border-color:var(--k3-bd); }
+  .k4 { color:var(--k4); background:var(--k4-bg); border-color:var(--k4-bd); }
+  .k2 { color:var(--k2); background:var(--k2-bg); border-color:var(--k2-bd); }
+  .cor { display:inline-block; font-family:var(--mono); font-size:11px; font-weight:600; color:#FFFFFF; border-radius:4px; padding:0 5px; margin:0 1px; white-space:nowrap; vertical-align:1px; }
+  .c1 { background:var(--cor-1); } .c2a { background:var(--cor-2a); color:#1D1602; } .c2b { background:var(--cor-2b); } .c3 { background:var(--cor-3); }
+  .cx { background:var(--surface-alt); color:var(--text-secondary); border:1px solid var(--border-strong); }
+  .dv { font-family:var(--mono); font-size:10px; font-weight:600; letter-spacing:.03em; color:var(--accent-red); background:var(--accent-red-bg); border:1px solid var(--accent-red-border); border-radius:4px; padding:0 5px; white-space:nowrap; }
+  .ds { font-family:var(--mono); font-size:10px; font-weight:600; letter-spacing:.03em; color:var(--accent-amber); border:1px solid var(--accent-amber-border); border-radius:4px; padding:0 5px; white-space:nowrap; }
+  .rigaD { padding:7px 0; border-bottom:1px dashed var(--border); font-size:14px; overflow-wrap:anywhere; }
+  .rigaD:last-child { border-bottom:none; }
+  .rigaD .et { font-family:var(--mono); font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--text-muted); margin-right:5px; }
+  .griglia { display:flex; flex-wrap:wrap; gap:0 18px; }
+  .griglia .chk { flex:1 1 280px; min-width:0; }
+  .kx { color:var(--text-muted); background:var(--surface-alt); border-color:var(--border-strong); }
+  .big { font-family:var(--display); font-size:21px; font-weight:700; line-height:1.15; }
+  .pg { font-family:var(--mono); font-size:11px; color:var(--text-muted); }
+  .nota { border-left:3px solid var(--accent-amber); background:var(--accent-amber-bg); border-radius:0 8px 8px 0; padding:7px 11px; margin-top:8px; font-size:13.5px; }
+  .nota.info { border-left-color:var(--accent-blue); background:var(--accent-blue-bg); }
+  .nota.stop { border-left-color:var(--accent-red); background:var(--accent-red-bg); }
+  .nota.ok { border-left-color:var(--accent-green); background:var(--accent-green-bg); }
+  .nota.spenta { border-left-color:var(--border-strong); background:var(--surface-alt); color:var(--text-secondary); }
+  .nota strong { color:var(--text-primary); }
+  .passo { display:flex; gap:10px; padding:8px 0; border-bottom:1px dashed var(--border); }
+  .passo:last-child { border-bottom:none; }
+  .passo .ico { flex:0 0 26px; font-weight:700; text-align:center; font-family:var(--mono); font-size:13px; padding-top:1px; color:var(--accent-blue); }
+  .passo .tx { flex:1 1 auto; font-size:14px; min-width:0; overflow-wrap:anywhere; }
+  .chk { display:flex; align-items:flex-start; gap:9px; padding:6px 0; font-size:14px; line-height:1.45; border-bottom:1px dashed var(--border); cursor:pointer; }
+  .chk:last-child { border-bottom:none; }
+  .chk input { margin-top:3px; width:17px; height:17px; flex:0 0 auto; accent-color:var(--accent-blue); }
+  .chk small { display:block; color:var(--text-muted); font-size:12px; }
+  .chk .tx { flex:1 1 auto; min-width:0; }
+  .chk.on .tx { color:var(--text-primary); font-weight:500; }
+  .lista li { margin:4px 0 4px 18px; font-size:13.5px; }
+  .vv { font-family:var(--mono); font-size:12px; color:var(--text-muted); }
+  .num { font-family:var(--display); font-size:17px; font-weight:700; }
+  .tab { width:100%; border-collapse:collapse; font-size:13px; margin-top:4px; }
+  .tab th, .tab td { text-align:left; padding:5px 6px; border-bottom:1px solid var(--border); vertical-align:top; }
+  .tab th { font-size:11.5px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; }
+  .tab td.n { font-family:var(--mono); white-space:nowrap; }
+  .tab tr.on td { background:var(--accent-blue-bg); font-weight:600; }
+  details.pieg { margin-top:8px; font-size:13.5px; }
+  details.pieg summary { cursor:pointer; font-weight:600; color:var(--text-secondary); }
+  .foot { margin-top:2.4rem; padding-top:1rem; border-top:1px solid var(--border-strong); font-size:12px; color:var(--text-muted); line-height:1.7; }
+  .foot strong { color:var(--text-secondary); }
+  @media (max-width:640px) {
+    .page { overflow-wrap:anywhere; }
+    .headline { font-size:25px; }
+    .stage-w { display:none; }
+    .fl { min-width:0; width:100%; }
+    .big { font-size:19px; }
+  }
+  @media print { .bar { position:static; } }
+</style>
+<style data-iphone="stile">
+/* L'avviso e' visibile per costruzione: lo nasconde solo la classe che la
+   sentinella mette quando JavaScript esiste, e lo rimostra quando il motore
+   muore. Nell'anteprima dell'iPhone nessuna delle due arriva. */
+#nomotore{background:#FCEBEB;border:1.5px solid #A32D2D;border-radius:10px;
+ padding:12px 15px;margin:0 0 1.1rem;font-size:13.5px;line-height:1.6;color:#0B0B0B;
+ font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+#nomotore strong{display:block;color:#A32D2D;font-size:15px;margin-bottom:4px}
+#nomotore p{margin:6px 0 0}
+#nomotore a{color:#A32D2D}
+#nomotore .nmurl{font-family:'SFMono-Regular',Consolas,Menlo,monospace;font-size:.92em;word-break:break-all}
+#nomotore .nmerr{display:block;font-family:'SFMono-Regular',Consolas,Menlo,monospace;
+ font-size:11.5px;color:#A32D2D;margin-top:6px;word-break:break-word}
+#nomotore .nmerr:empty{display:none}
+html.js #nomotore{display:none}
+html.js.motore-ko #nomotore{display:block}
+
+#nmprivacy{background:#E2F4F5;border:1px solid #A7DBDE;border-radius:8px;padding:9px 13px;
+ margin:0 0 1rem;font-size:12.5px;line-height:1.55;color:#0B0B0B;
+ font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+@media print{#nmprivacy{display:none}}
+</style>
+</head>
+<body>
+<div class="nomotore" id="nomotore" role="alert">
+ <strong>Motore di calcolo non attivo</strong>
+ <p>I calcoli, i filtri e i comandi di questa pagina <b>non funzionano</b>: dove leggi «—» non c'è un
+ valore. Il testo resta leggibile, i numeri che dipendono dai tuoi dati no. Non usare questa pagina
+ per decidere una dose.</p>
+ <p>Su iPhone e iPad succede sempre con un file salvato sul telefono: si apre nell'<b>anteprima</b> —
+ dall'app File, da Mail, da WhatsApp —, che mostra la pagina ma non esegue il motore, e Apple non
+ permette di aprirlo in Safari. Sull'iPhone il tool funziona aperto da questo indirizzo, in Safari: <a class="nmurl" href="https://francescofugetto-ai.github.io/tool-farmaci-pah-web/">https://francescofugetto-ai.github.io/tool-farmaci-pah-web/</a> — poi Condividi, «Aggiungi alla schermata Home». Dopo la prima apertura funziona anche senza rete. Su computer e Android basta aprire il file.</p>
+ <span class="nmerr" id="nmerr"></span>
+</div>
+<div class="nmprivacy" id="nmprivacy">
+ <b>Quello che scrivi resta su questo dispositivo.</b> La pagina non invia niente in rete e non
+ salva niente: nessun dato esce da qui. Per la stessa ragione, <b>chiudendola il contenuto si
+ perde</b> — copia il referto dove ti serve prima di chiudere.
+</div>
+<div class="page">
+<header class="hero">
+  <div class="kicker">Strumento · Ipertensione arteriosa polmonare · ESC/ERS 2022, con le schede tecniche</div>
+  <h1 class="headline">Farmaci della PAH — la dose per questo paziente, con rene, fegato, interazioni e bambino</h1>
+  <p class="lede"><strong>Come si usa.</strong> Il passo 1 sceglie il farmaco. Il passo 2 porta età, sesso, peso e creatinina: dai 18 anni la <strong>clearance di Cockcroft-Gault</strong> sul peso reale decide il rene; sotto i 18 anni le dosi della scheda per età e peso, e il rene non si stima. Il passo 3 è il fegato: classe di Child-Pugh e transaminasi, con le soglie del bosentan. Il passo 4 è la gravidanza. Il passo 5 mostra <strong>solo i farmaci che per questa molecola contano</strong>. Un campo che decide se la dose esiste, se manca, dà «—» con la ragione. Dove la scheda dice «non studiato» o non ha uno schema non c'è una dose: decide lo specialista. Che cosa dare, e quando: <strong>Tool Terapia PAH</strong>. <strong>Azzera</strong>, in alto, ricomincia.</p>
+  <div class="meta-row">
+    <span class="meta-chip"><strong>Dosi</strong> ESC/ERS 2022, Tab. 19, p. 3664 · test di vasoreattività, Tab. 12, p. 3647</span>
+    <span class="meta-chip"><strong>Classi</strong> supplementare, Tab. S3, p. 10 · Rec. Table 7, p. 3664</span>
+    <span class="meta-chip"><strong>Interazioni</strong> supplementare, Tab. S4, pp. 10–11 · schede tecniche</span>
+    <span class="meta-chip"><strong>Rene, fegato, bambino</strong> schede tecniche per principio attivo, lette il 27/10/2026</span>
+    <span class="meta-chip"><strong>In Italia</strong> Banca dati AIFA, 27/10/2026</span>
+  </div>
+</header>
+
+<div class="bar" id="bar" aria-live="polite">
+  <span class="lbl">Farmaco</span> <span id="barFar" class="cat kx">—</span>
+  <span class="lbl">Esito</span> <span id="barEsito" class="cat kx">—</span>
+  <span class="lbl">Rene</span> <span id="barRene" class="cat kx">—</span>
+  <span class="sp"></span>
+  <button class="btn" id="azzera" type="button">Azzera</button>
+</div>
+
+<div class="stage"><span class="stage-n">1</span><span class="stage-t">Il farmaco</span><span class="stage-w">Tab. 19, p. 3664 · Tab. 12, p. 3647</span></div>
+<div class="card">
+  <div class="riga"><span class="fl">Farmaco</span>
+    <select id="far">
+      <option value="">— scegli —</option>
+      <optgroup label="Calcioantagonisti, solo nei responder">
+        <option value="amlodipina">amlodipina</option>
+        <option value="diltiazem">diltiazem</option>
+        <option value="felodipina">felodipina</option>
+        <option value="nifedipina">nifedipina</option>
+      </optgroup>
+      <optgroup label="Antagonisti dell'endotelina, per bocca">
+        <option value="ambrisentan">ambrisentan</option>
+        <option value="bosentan">bosentan</option>
+        <option value="macitentan">macitentan</option>
+      </optgroup>
+      <optgroup label="Inibitori della PDE5">
+        <option value="sildenafil">sildenafil per bocca</option>
+        <option value="sildenafil_ev">sildenafil e.v.</option>
+        <option value="tadalafil">tadalafil</option>
+      </optgroup>
+      <optgroup label="Stimolatore della guanilato ciclasi">
+        <option value="riociguat">riociguat</option>
+      </optgroup>
+      <optgroup label="Agonista del recettore IP">
+        <option value="selexipag">selexipag per bocca</option>
+        <option value="selexipag_ev">selexipag e.v. (non in Italia)</option>
+      </optgroup>
+      <optgroup label="Prostanoidi inalatori">
+        <option value="iloprost">iloprost inalatorio</option>
+        <option value="treprostinil_in">treprostinil inalatorio (non in Italia)</option>
+      </optgroup>
+      <optgroup label="Prostanoidi e.v. e s.c.">
+        <option value="epoprostenolo">epoprostenolo e.v.</option>
+        <option value="treprostinil">treprostinil s.c. o e.v.</option>
+        <option value="iloprost_ev">iloprost e.v.</option>
+      </optgroup>
+      <optgroup label="Prostanoidi per bocca (non in Italia)">
+        <option value="beraprost">beraprost sodico</option>
+        <option value="beraprost_rp">beraprost a rilascio prolungato</option>
+        <option value="treprostinil_os">treprostinil per bocca</option>
+      </optgroup>
+      <optgroup label="Altri">
+        <option value="mt">macitentan/tadalafil, combinazione fissa (non in Italia)</option>
+        <option value="sotatercept">sotatercept</option>
+      </optgroup>
+      <optgroup label="Test di vasoreattività">
+        <option value="no_test">ossido nitrico inalatorio, per il test</option>
+        <option value="ilo_test">iloprost inalatorio, per il test</option>
+        <option value="epo_test">epoprostenolo e.v., per il test</option>
+      </optgroup>
+    </select></div>
+  <div class="riga hide" id="rigaResp"><span class="fl">Test di vasoreattività acuto<small>senza test o senza risposta il calcioantagonista non si dà per la PAH; il test si legge nel Tool Cateterismo IP</small></span>
+    <span class="seg">
+      <label><input type="radio" name="resp" value="si"><span>risponde</span></label>
+      <label><input type="radio" name="resp" value="no"><span>non risponde o non fatto</span></label>
+    </span></div>
+  <div class="riga hide" id="rigaInd"><span class="fl">Per che cosa<small>le due schede del treprostinil dicono cose diverse sul rene</small></span>
+    <span class="seg">
+      <label><input type="radio" name="ind" value="iap"><span>PAH</span></label>
+      <label><input type="radio" name="ind" value="cteph"><span>CTEPH</span></label>
+    </span></div>
+  <div id="outFar" style="margin-top:6px"></div>
+</div>
+
+<div id="blocco2">
+<div class="stage"><span class="stage-n">2</span><span class="stage-t">Il paziente e il rene</span><span class="stage-w">schede tecniche · Cockcroft-Gault</span></div>
+<div class="card">
+  <div class="riga"><span class="fl">Età<small>sotto i 18 anni le dosi del bambino</small></span><input type="number" id="eta" min="0" max="110" step="1" inputmode="numeric" placeholder="anni"><span class="vv" id="vEta">—</span></div>
+  <div id="campiPaz">
+  <div class="riga"><span class="fl">Sesso</span>
+    <span class="seg">
+      <label><input type="radio" name="sesso" value="m"><span>uomo</span></label>
+      <label><input type="radio" name="sesso" value="f"><span>donna</span></label>
+    </span></div>
+  <div class="riga"><span class="fl">Peso<small>reale: le dosi per kg seguono questo</small></span><input type="number" id="peso" min="2" max="300" step="0.1" inputmode="decimal" placeholder="kg"><span class="vv" id="vPeso">—</span></div>
+  <div class="riga"><span class="fl">Altezza<small>serve al BMI: dai 30 si mostra anche la clearance sul peso aggiustato</small></span><input type="number" id="alt" min="40" max="230" step="1" inputmode="numeric" placeholder="cm"><span class="vv" id="vAlt">—</span></div>
+  <div class="riga"><span class="fl">Creatinina</span><input type="number" id="creat" min="0.1" max="1800" step="0.01" inputmode="decimal" placeholder="—">
+    <span class="seg">
+      <label><input type="radio" name="ucr" value="mg" id="ucr_mg" checked><span>mg/dL</span></label>
+      <label><input type="radio" name="ucr" value="umol"><span>µmol/L</span></label>
+    </span></div>
+  <label class="chk" id="chkDial"><input type="checkbox" id="dialisi"><span class="tx">In dialisi</span></label>
+  <div class="riga hide" id="rigaEgfr"><span class="fl">eGFR<small>mL/min/1,73 m². Per il selexipag la scheda ragiona in eGFR: non si converte</small></span><input type="number" id="egfr" min="1" max="200" step="1" inputmode="numeric" placeholder="eGFR"></div>
+  </div>
+  <div id="outRene" style="margin-top:8px"></div>
+</div>
+</div>
+
+<div id="blocco3">
+<div class="stage"><span class="stage-n">3</span><span class="stage-t">Il fegato</span><span class="stage-w">schede tecniche, § 4.2, 4.3, 4.4</span></div>
+<div class="card">
+  <div class="riga"><span class="fl">Compromissione epatica<small>classe di Child-Pugh; dove la scheda dice lieve, moderata, severa: A, B, C, lettura nostra</small></span>
+    <span class="seg">
+      <label><input type="radio" name="cp" value="0"><span>nessuna</span></label>
+      <label><input type="radio" name="cp" value="A"><span>A</span></label>
+      <label><input type="radio" name="cp" value="B"><span>B</span></label>
+      <label><input type="radio" name="cp" value="C"><span>C</span></label>
+    </span></div>
+  <div class="riga hide" id="rigaMom"><span class="fl">Il momento</span>
+    <span class="seg">
+      <label><input type="radio" name="mom" value="pre"><span>prima di iniziare</span></label>
+      <label><input type="radio" name="mom" value="corso"><span>già in terapia</span></label>
+    </span></div>
+  <div class="riga hide" id="rigaTx"><span class="fl">AST o ALT, il più alto<small>in multipli del limite superiore (× LSN)</small></span><input type="number" id="tx" min="0" max="200" step="0.1" inputmode="decimal" placeholder="× LSN"><span class="vv" id="vTx">—</span></div>
+  <label class="chk hide" id="chkBil"><input type="checkbox" id="bil"><span class="tx" id="txBil">Bilirubina &gt; 2 × LSN</span></label>
+  <label class="chk hide" id="chkSint"><input type="checkbox" id="sint"><span class="tx">Sintomi di danno epatico<small>nausea, vomito, febbre, dolore addominale, ittero, letargia, sindrome simil-influenzale</small></span></label>
+  <div id="outFeg" style="margin-top:8px"></div>
+</div>
+</div>
+
+<div id="blocco4">
+<div class="stage"><span class="stage-n">4</span><span class="stage-t">Gravidanza e allattamento</span><span class="stage-w">Rec. Table 6, p. 3663 · schede, § 4.3, 4.6</span></div>
+<div class="card">
+  <div class="riga" id="rigaPreg"><span class="fl">Se è una donna</span>
+    <select id="preg">
+      <option value="">— scegli —</option>
+      <option value="np">non fertile, o non pertinente</option>
+      <option value="con">età fertile, con contraccezione efficace</option>
+      <option value="senza">età fertile, senza contraccezione</option>
+      <option value="gr">in gravidanza</option>
+      <option value="all">allatta</option>
+    </select></div>
+  <div id="outPreg" style="margin-top:6px"></div>
+</div>
+</div>
+
+<div id="blocco5">
+<div class="stage"><span class="stage-n">5</span><span class="stage-t">Altri farmaci in corso</span><span class="stage-w">Tab. S4, pp. 10–11 · schede, § 4.5</span></div>
+<div class="card">
+  <p class="pg" id="txComed" style="margin-bottom:4px"></p>
+  <div class="griglia" id="boxComed"></div>
+  <div id="outInt" style="margin-top:8px"></div>
+</div>
+</div>
+
+<div class="stage"><span class="stage-n">→</span><span class="stage-t">La dose per questo paziente</span><span class="stage-w">ogni riga con la sua fonte</span></div>
+<div class="card"><div id="outEsito"></div></div>
+<div class="card"><h3>La dose nella fonte e nella scheda</h3><div id="outDose"></div></div>
+<div class="card"><h3>Controindicazioni della scheda, da escludere</h3><div id="outCi"></div></div>
+<div class="card"><h3>Monitoraggio</h3><div id="outMon"></div></div>
+<div class="card"><h3>Dove la fonte e le schede non dicono la stessa cosa</h3><div id="outInc"></div></div>
+<div class="card"><h3>Limiti per questo paziente</h3><ul class="lista" id="limiti"></ul></div>
+
+<div class="foot">
+  <strong>Fonte.</strong> 2022 ESC/ERS Guidelines for the diagnosis and treatment of pulmonary hypertension. <em>Eur Heart J</em> 2022;43:3618–3731, con il supplementare — dosi dell'adulto (Tab. 19, p. 3664), farmaci del test (Tab. 12, p. 3647), Rec. Table 1 (p. 3648), Rec. Table 6 (p. 3663), Rec. Table 7 (p. 3664), Rec. Table 10 (p. 3670), bambino (Tab. 22, p. 3684); classi in monoterapia (supplementare, Tab. S3, p. 10), interazioni (supplementare, Tab. S4, pp. 10–11). <strong>Rene, fegato, interazioni, bambino</strong> dalle schede tecniche lette il 27/10/2026, citate per principio attivo: ambrisentan, bosentan, macitentan, sildenafil, tadalafil per l'IAP, riociguat, macitentan/tadalafil, selexipag, iloprost inalatorio, treprostinil per la CTEPH, ossido nitrico (EMA); iloprost e.v., epoprostenolo, treprostinil per l'IAP, amlodipina, nifedipina, diltiazem, felodipina (AIFA); per ciò che in Europa non c'è, le etichette FDA di selexipag, treprostinil inalatorio e treprostinil orale. Disponibilità: Banca dati farmaci AIFA, 27/10/2026. Ogni numero mostrato porta la sua fonte.<br><br>
+  Strumento personale di studio e consultazione: <strong>non sostituisce il centro per l'ipertensione polmonare né la scheda tecnica</strong>. Calcola la clearance di Cockcroft-Gault nell'adulto e legge le dosi per età e peso. Non salva i dati e non li invia in rete.
+</div>
+</div>
+<script>
+(function () {
+  "use strict";
+
+  /* ═══ DATI ═══════════════════════════════════════════════════════════════
+     2022 ESC/ERS Guidelines (guardate come immagine il 01/11/2026):
+     Tab. 19, p. 3664 — dosi dell'adulto, iniziale e bersaglio, con le note a-e.
+     Tab. 12, p. 3647 — farmaci del test di vasoreattività.
+     Rec. Table 1, p. 3648; Rec. Table 6, p. 3663; Rec. Table 7, p. 3664; Rec. Table 10, p. 3670.
+     Tab. 22, p. 3684 — bambino: le posologie suggerite non diventano una dose.
+     Supplementare: Tab. S3, p. 10 (classi in monoterapia); Tab. S4, pp. 10-11 (interazioni).
+     Schede tecniche per principio attivo, lette il 27/10/2026, note in _lavoro/schede.
+     Regole del medico (BRIEF-STRUMENTI.md 2, 3, 4, 6, 8): «non studiato», «nessun dato» o nessuno schema =
+     nessuna dose; «insufficienza renale» senza soglia = ClCr < 60; «severa» o «grave» senza numero =
+     ClCr < 30, dichiarato; tadalafil a 30 esatto si legge grave (≤ 30); Tab. S4 contro scheda: la lettura
+     più prudente, con un DA SAPERE. */
+  var T19 = "ESC/ERS 2022, Tab. 19, p. 3664", T12 = "ESC/ERS 2022, Tab. 12, p. 3647", S3 = "supplementare, Tab. S3, p. 10",
+      S4A = "supplementare, Tab. S4, p. 10", S4B = "supplementare, Tab. S4, p. 11", RT7 = "ESC/ERS 2022, Rec. Table 7, p. 3664",
+      RT1 = "ESC/ERS 2022, Rec. Table 1, p. 3648", RT6 = "ESC/ERS 2022, Rec. Table 6, p. 3663", RT10 = "ESC/ERS 2022, Rec. Table 10, p. 3670",
+      AIFA = "Banca dati AIFA, 27/10/2026";
+  var SC = {
+    amb:"scheda tecnica di ambrisentan, EMA, testo del 26/02/2026", bos:"scheda tecnica di bosentan, EMA, testo del 30/09/2024",
+    mac:"scheda tecnica di macitentan, EMA, testo del 15/04/2026", sil:"scheda tecnica di sildenafil, EMA, testo del 05/08/2026",
+    tad:"scheda tecnica di tadalafil per l'IAP, EMA, testo del 22/08/2025", rio:"scheda tecnica di riociguat, EMA, testo del 14/05/2026",
+    mt:"scheda tecnica di macitentan/tadalafil, EMA, testo del 04/05/2026", sel:"scheda tecnica di selexipag, EMA, testo del 28/11/2025",
+    ilo:"scheda tecnica di iloprost inalatorio, EMA, testo del 14/06/2024", iloev:"scheda tecnica di iloprost e.v., AIFA, reso disponibile il 26/06/2026",
+    epo:"scheda tecnica di epoprostenolo, AIFA, reso disponibile il 17/03/2026", tre:"scheda tecnica di treprostinil per l'IAP, AIFA, revisione del 13/02/2026",
+    trec:"scheda tecnica di treprostinil per la CTEPH, EMA, testo del 31/07/2025", aml:"scheda tecnica di amlodipina, AIFA, reso disponibile il 22/02/2023",
+    nif:"scheda tecnica di nifedipina, AIFA, rilascio prolungato e gocce", dil:"scheda tecnica di diltiazem, AIFA, reso disponibile il 17/01/2025",
+    fel:"scheda tecnica di felodipina, AIFA, reso disponibile il 13/10/2023", no:"scheda tecnica di ossido nitrico, EMA, testo del 15/05/2025"
+  };
+  function st(k, par) { return ' <span class="pg">' + SC[k] + ", § " + par + "</span>"; }
+  function pg(x) { return ' <span class="pg">' + x + "</span>"; }
+  var DS = '<span class="ds">DA SAPERE</span> ', DV = ' <span class="dv">DA VERIFICARE</span>', ND = "nessuna dose, decide lo specialista";
+
+  var SOGLIE = { adulto:18, irGenerica:60, grave:30, bmiAgg:30, obesoTre:1.3, kgCreat:88.4 };
+  var DOM = { eta:[0,110], peso:[2,300], alt:[40,230], tx:[0,200], egfr:[1,200] };
+
+  // I farmaci che possono contare, per molecola: si mostrano solo quelli della molecola scelta.
+  var COMED = {
+    nitrati:"Nitrati in qualsiasi forma, o donatori di NO", nicorandil:"Nicorandil", molsidomina:"Molsidomina",
+    riociguat:"Riociguat", sildenafil:"Sildenafil", tadalafil:"Tadalafil", pde5altri:"Altri inibitori della PDE5, anche per la disfunzione erettile",
+    ambrisentan:"Ambrisentan", bosentan:"Bosentan", macitentan:"Macitentan", prostanoide:"Un altro prostanoide",
+    ciclosporina:"Ciclosporina", tacrolimus:"Tacrolimus o sirolimus", glibenclamide:"Glibenclamide",
+    fluconazolo:"Fluconazolo", amiodarone:"Amiodarone", ketoconazolo:"Ketoconazolo", itraconazolo:"Itraconazolo", voriconazolo:"Voriconazolo", posaconazolo:"Posaconazolo",
+    ritonavir:"Ritonavir, anche come potenziatore di un inibitore della proteasi", saquinavir:"Saquinavir", nevirapina:"Nevirapina",
+    eritromicina:"Eritromicina", claritromicina:"Claritromicina, telitromicina o nefazodone", cimetidina:"Cimetidina",
+    rifampicina:"Rifampicina", fenitoina:"Fenitoina", carbamazepina:"Carbamazepina o fenobarbital", iperico:"Iperico",
+    gemfibrozil:"Gemfibrozil", clopidogrel:"Clopidogrel", deferasirox:"Deferasirox", teriflunomide:"Teriflunomide", trimetoprim:"Trimetoprim", valproato:"Acido valproico o probenecid",
+    warfarin:"Warfarin o altro antagonista della vitamina K", statine:"Simvastatina o atorvastatina", contraccettivi:"Contraccettivi ormonali",
+    alfabloccanti:"Doxazosina o altri alfa-bloccanti", sacval:"Sacubitril/valsartan", antitrombotici:"Anticoagulanti o antiaggreganti", vasodilatatori:"Altri vasodilatatori o antipertensivi",
+    diltiazem:"Diltiazem", betabloccanti:"Beta-bloccanti o antiaritmici", digossina:"Digossina", ivabradina:"Ivabradina", lomitapide:"Lomitapide", dantrolene:"Dantrolene e.v.",
+    erlotinib:"Erlotinib o gefitinib", antiacidi:"Antiacidi con idrossido di alluminio o di magnesio", fumo:"Fuma"
+  };
+
+  /* Ogni riga di interazione: c = caselle che la accendono; k = stop (controindicata, non raccomandata, da
+     evitare: nessuna dose, decide lo specialista), mod (cambia la dose, nell'adulto), warn, info. */
+  function I(c, k, t, x) { var o = { c:c, k:k, t:t }; if (x) { o.ini = x.ini; o.ber = x.ber; o.pedOk = x.pedOk; o.tPed = x.tPed; o.pedNo = x.pedNo; } return o; }
+  var INTER = {
+    amlodipina:[
+      I(["ketoconazolo","itraconazolo","ritonavir","eritromicina","claritromicina","diltiazem"], "warn", "<b>Inibitori del CYP3A4:</b> esposizione più alta, più ipotensione: monitorare, possibile aggiustamento" + st("aml","4.5") + "."),
+      I(["rifampicina","iperico"], "warn", "<b>Induttori del CYP3A4:</b> concentrazioni variabili: pressione e possibile aggiustamento" + st("aml","4.5") + "."),
+      I(["statine"], "warn", "<b>Simvastatina:</b> al massimo 20 mg/die con amlodipina" + st("aml","4.5") + "."),
+      I(["ciclosporina","tacrolimus"], "warn", "<b>Ciclosporina, tacrolimus:</b> livelli più alti: da controllare" + st("aml","4.5") + "."),
+      I(["dantrolene"], "stop", "<b>Dantrolene e.v.:</b> da evitare" + st("aml","4.5") + ".")
+    ],
+    diltiazem:[
+      I(["amiodarone","ivabradina","lomitapide","dantrolene"], "stop", "<b>Amiodarone, ivabradina, lomitapide, dantrolene e.v.:</b> associazione controindicata" + st("dil","4.3, 4.5") + "."),
+      I(["betabloccanti","digossina"], "warn", "<b>Beta-bloccanti, digossina, antiaritmici:</b> bradicardia e blocchi: sorveglianza con l'ECG" + st("dil","4.5") + "."),
+      I(["statine"], "warn", "<b>Statine:</b> ne aumenta i livelli: meglio una non metabolizzata dal CYP3A4" + st("dil","4.5") + "."),
+      I(["ciclosporina"], "warn", "<b>Ciclosporina:</b> si riduce la dose, e si guardano i livelli" + st("dil","4.5") + "."),
+      I(["antitrombotici"], "warn", "<b>DOAC:</b> cautela, sanguinamento" + st("dil","4.5") + "."),
+      I(["nitrati"], "warn", "<b>Nitrati:</b> titolare gradualmente" + st("dil","4.5") + "."),
+      I(["cimetidina"], "warn", "<b>Anti-H2:</b> aumentano il diltiazem, può servire cambiare la dose" + st("dil","4.5") + "."),
+      I(["rifampicina","fenitoina"], "warn", "<b>Rifampicina, fenitoina:</b> lo riducono" + st("dil","4.5") + ".")
+    ],
+    felodipina:[
+      I(["itraconazolo","ketoconazolo","ritonavir","eritromicina","cimetidina"], "stop", "<b>Inibitori potenti del CYP3A4:</b> da evitare (itraconazolo: picco ×8, area sotto la curva ×6)" + st("fel","4.5") + "."),
+      I(["carbamazepina","fenitoina","rifampicina","nevirapina","iperico"], "stop", "<b>Induttori potenti del CYP3A4:</b> da evitare (fenobarbital: esposizione −96%); se inevitabili, si adatta la dose o si toglie l'interferente" + st("fel","4.5") + "."),
+      I(["tacrolimus"], "warn", "<b>Tacrolimus:</b> livelli più alti: da controllare" + st("fel","4.5") + ".")
+    ],
+    nifedipina:[
+      I(["rifampicina"], "stop", "<b>Rifampicina:</b> controindicata" + st("nif","4.3, 4.5") + "."),
+      I(["fenitoina","carbamazepina"], "warn", "<b>Fenitoina, carbamazepina, fenobarbital:</b> meno efficacia, possibile aumento della dose" + st("nif","4.5") + "."),
+      I(["ketoconazolo","itraconazolo","ritonavir","eritromicina","claritromicina","cimetidina"], "warn", "<b>Inibitori del CYP3A4:</b> concentrazioni più alte: pressione, possibile riduzione della dose" + st("nif","4.5") + "."),
+      I(["diltiazem"], "warn", "<b>Diltiazem:</b> ne riduce la clearance: con cautela, eventualmente meno nifedipina" + st("nif","4.5") + "."),
+      I(["sildenafil","tadalafil"], "warn", "<b>Inibitori della PDE5:</b> effetto antipertensivo potenziato" + st("nif","4.5") + "."),
+      I(["betabloccanti"], "warn", "<b>Beta-bloccanti:</b> ipotensione e, in casi isolati, peggioramento dello scompenso" + st("nif","4.5") + "."),
+      I(["digossina","tacrolimus"], "warn", "<b>Digossina, tacrolimus:</b> livelli più alti: da controllare" + st("nif","4.5") + ".")
+    ],
+    ambrisentan:[
+      I(["ciclosporina"], "mod", "<b>Ciclosporina: al massimo 5 mg/die</b>, paziente seguito da vicino; esposizione raddoppiata" + st("amb","4.2, 4.5") + ". " + DS + "la Tab. S4 dice soltanto cautela" + pg(S4A) + ": vale il tetto della scheda.", { ini:"5 mg/die", ber:"5 mg/die, il massimo con la ciclosporina", pedOk:true, tPed:"<b>Ciclosporina, nel bambino: al massimo 2,5 mg/die fra 20 e &lt; 50 kg, al massimo 5 mg/die da 50 kg</b>, paziente seguito da vicino; esposizione raddoppiata" + st("amb","4.2, 4.5") + ". " + DS + "la Tab. S4 dice soltanto cautela" + pg(S4A) + ": vale il tetto della scheda." }),
+      I(["ketoconazolo"], "warn", "<b>Ketoconazolo: cautela</b>" + pg(S4A) + ". " + DS + "la scheda lo dice senza effetto rilevante" + st("amb","4.5") + ": si tiene la lettura più prudente."),
+      I(["rifampicina"], "warn", "<b>Rifampicina:</b> esposizione circa doppia nelle prime dosi: monitorare strettamente all'inizio" + st("amb","4.5") + "."),
+      I(["tadalafil"], "warn", "<b>Con il tadalafil</b> la dose è 10 mg/die, secondo tolleranza" + st("amb","4.2") + ".", { tPed:"<b>Con il tadalafil, nel bambino:</b> i 10 mg/die sono scritti per l'adulto. Nel bambino vale la dose per peso, in monoterapia o in associazione" + st("amb","4.2") + "." }),
+      I(["prostanoide","riociguat"], "warn", "<b>Prostanoidi e riociguat:</b> associazione non studiata: cautela" + st("amb","4.5") + "."),
+      I(["contraccettivi"], "info", "<b>Contraccettivi ormonali:</b> lieve calo dell'area sotto la curva, senza rilievo clinico" + pg(S4A) + ".")
+    ],
+    bosentan:[
+      I(["ciclosporina"], "stop", "<b>Ciclosporina: controindicata.</b> Bosentan molto più alto, ciclosporina −50%" + pg(S4A) + st("bos","4.3, 4.5") + "."),
+      I(["glibenclamide"], "stop", "<b>Glibenclamide: controindicata</b>" + pg(S4A) + "; per la scheda «non deve essere usata»: più rialzi delle transaminasi" + st("bos","4.5") + "."),
+      I(["fluconazolo"], "stop", "<b>Fluconazolo: controindicato</b>, bosentan molto più alto" + pg(S4A) + ". " + DS + "per la scheda la combinazione «non viene raccomandata»" + st("bos","4.5") + ": si tiene la lettura più prudente."),
+      I(["amiodarone"], "stop", "<b>Amiodarone: controindicato</b>, bosentan molto più alto" + pg(S4A) + ". " + DS + "la scheda non lo nomina: si tiene la lettura più prudente."),
+      I(["ketoconazolo","itraconazolo","voriconazolo"], "stop", "<b>Inibitori potenti del CYP3A4 e inibitori del CYP2C9:</b> «non è raccomandata»" + st("bos","4.5") + ". " + DS + "lo stesso paragrafo, sul ketoconazolo da solo (bosentan ×2, anche per la Tab. S4" + pg(S4A) + "), dice che non serve cambiare dose. Si tiene la lettura più prudente."),
+      I(["ritonavir"], "stop", "<b>Ritonavir:</b> come inibitore potente del CYP3A4 «non è raccomandata»; con lopinavir/ritonavir e gli inibitori potenziati bosentan ×48 all'inizio e ×5 al 9° giorno, e la scheda chiede di monitorare la tollerabilità" + st("bos","4.5") + ". Si tiene la lettura più prudente."),
+      I(["rifampicina"], "stop", "<b>Rifampicina:</b> bosentan −58%, fino a −90%: «non è raccomandato»" + st("bos","4.5") + ". " + DS + "la Tab. S4 dice che non è chiaro se aggiustare la dose" + pg(S4A) + "."),
+      I(["nevirapina"], "stop", "<b>Nevirapina:</b> «non è raccomandata»" + st("bos","4.5") + "."),
+      I(["fenitoina"], "warn", "<b>Fenitoina:</b> bosentan −58%, non è chiaro se aggiustare la dose" + pg(S4A) + "; riduzione attesa" + st("bos","4.5") + "."),
+      I(["carbamazepina","iperico"], "warn", "<b>Carbamazepina, fenobarbital, iperico:</b> riduzione attesa del bosentan" + st("bos","4.5") + "."),
+      I(["tacrolimus"], "warn", "<b>Tacrolimus, sirolimus:</b> «non è consigliabile»; se servono, monitoraggio stretto e livelli" + st("bos","4.5") + "."),
+      I(["eritromicina"], "warn", "<b>Eritromicina:</b> bosentan più alto; per un ciclo breve forse nessun aggiustamento" + pg(S4A) + "."),
+      I(["sildenafil"], "stop", "<b>Sildenafil:</b> aggiungere il bosentan è <b>III B</b> per ridurre gli eventi e IIb C per la capacità d'esercizio" + pg(RT10) + ". Sildenafil −63%, bosentan +50%" + st("bos","4.5") + "; la Tab. S4 dice −50%" + pg(S4A) + ". La scelta è del centro: Tool Terapia PAH."),
+      I(["tadalafil"], "warn", "<b>Tadalafil:</b> −42%, forse nessun aggiustamento" + pg(S4B) + "; efficacia non dimostrata in modo conclusivo" + st("tad","4.5") + ". Aggiungere il tadalafil al bosentan è IIb C" + pg(RT10) + "."),
+      I(["warfarin"], "warn", "<b>Warfarin:</b> INR più stretto all'inizio e in titolazione; di solito senza cambiare la dose" + pg(S4B) + st("bos","4.5") + "."),
+      I(["statine"], "warn", "<b>Statine:</b> simvastatina −50%, probabilmente lo stesso con l'atorvastatina: colesterolo da controllare" + pg(S4B) + "."),
+      I(["contraccettivi"], "warn", "<b>Contraccettivi ormonali inaffidabili:</b> mai come unico metodo" + pg(S4B) + st("bos","4.5") + ".")
+    ],
+    macitentan:[
+      I(["rifampicina","iperico","carbamazepina","fenitoina"], "stop", "<b>Induttori forti del CYP3A4:</b> l'associazione «deve essere evitata» (rifampicina: macitentan −79%)" + st("mac","4.5") + ". " + DS + "per la Tab. S4 sulla rifampicina non è chiaro se aggiustare la dose" + pg(S4B) + ": si tiene la scheda."),
+      I(["ketoconazolo","itraconazolo","voriconazolo","claritromicina","ritonavir","saquinavir"], "warn", "<b>Inibitori forti del CYP3A4:</b> particolare attenzione, nessuna dose ridotta scritta" + st("mac","4.5") + "."),
+      I(["fluconazolo","amiodarone"], "warn", "<b>Fluconazolo, amiodarone:</b> inibitori moderati doppi: particolare attenzione" + st("mac","4.5") + "."),
+      I(["ciclosporina"], "warn", "<b>Ciclosporina:</b> da sola nessun effetto rilevante; con un inibitore moderato del CYP2C9 (miconazolo, piperina) particolare attenzione" + st("mac","4.5") + ".")
+    ],
+    sildenafil:[
+      I(["nitrati","nicorandil","molsidomina"], "stop", "<b>Nitrati, nicorandil, molsidomina: controindicati</b>, ipotensione sistemica profonda" + pg(S4B) + st("sil","4.3, 4.5") + "."),
+      I(["riociguat"], "stop", "<b>Riociguat: controindicato</b>" + pg(S4B) + st("sil","4.3") + "; <b>III B</b>" + pg(RT10) + "."),
+      I(["ketoconazolo","itraconazolo","ritonavir"], "stop", "<b>Ketoconazolo, itraconazolo, ritonavir: controindicati</b> (ritonavir: esposizione ×11)" + st("sil","4.3, 4.5") + ". " + DS + "la Tab. S4 sul ketoconazolo dice forse nessun aggiustamento, sul ritonavir «non raccomandata»" + pg(S4B) + ": si tiene la scheda."),
+      I(["saquinavir"], "stop", "<b>Saquinavir: associazione non raccomandata</b>" + pg(S4B) + ". " + DS + "la scheda dice di considerare 20 mg ×2/die" + st("sil","4.5") + ": si tiene la lettura più prudente."),
+      I(["eritromicina"], "mod", "<b>Eritromicina:</b> da considerare 20 mg ×2/die" + st("sil","4.5") + ". " + DS + "per la Tab. S4, in un ciclo breve, forse nessun aggiustamento" + pg(S4B) + ": si tiene la scheda.", { ini:"20 mg ×2/die", ber:"20 mg ×2/die, da considerare" }),
+      I(["claritromicina"], "mod", "<b>Claritromicina, telitromicina, nefazodone:</b> 20 mg una volta al giorno, raccomandata" + st("sil","4.5") + ".", { ini:"20 mg ×1/die", ber:"20 mg ×1/die" }),
+      I(["cimetidina"], "warn", "<b>Cimetidina:</b> sildenafil più alto, forse nessun aggiustamento" + pg(S4B) + st("sil","4.5") + "."),
+      I(["rifampicina","carbamazepina","iperico"], "warn", "<b>Induttori del CYP3A4:</b> efficacia da seguire; possono servire aggiustamenti, senza un numero" + st("sil","4.5") + "."),
+      I(["fenitoina"], "warn", "<b>Fenitoina:</b> il sildenafil può scendere" + pg(S4B) + "; efficacia da seguire" + st("sil","4.5") + "."),
+      I(["bosentan"], "warn", "<b>Bosentan:</b> sildenafil −63%, bosentan +50%, e l'efficacia del sildenafil su bosentan non è dimostrata con certezza" + st("sil","4.4, 4.5") + "; la Tab. S4 dice −50%, forse nessun aggiustamento" + pg(S4B) + ". Aggiungere il sildenafil al bosentan è IIb C, il bosentan al sildenafil III B per gli eventi" + pg(RT10) + ". La scelta è del centro: Tool Terapia PAH."),
+      I(["statine"], "warn", "<b>Simvastatina, atorvastatina:</b> possono salire, e il sildenafil con loro; forse più rabdomiolisi" + pg(S4B) + "."),
+      I(["alfabloccanti","sacval"], "warn", "<b>Alfa-bloccanti, sacubitril/valsartan:</b> cautela, ipotensione" + st("sil","4.4") + "."),
+      I(["warfarin"], "warn", "<b>Antagonisti della vitamina K:</b> più sanguinamenti, soprattutto nella PAH da connettivopatia" + st("sil","4.4") + "."),
+      I(["pde5altri","tadalafil"], "stop", "<b>Altri inibitori della PDE5:</b> «sconsigliato»" + st("sil","4.5") + "."),
+      I(["ambrisentan","prostanoide"], "warn", "<b>Ambrisentan, iloprost:</b> si raccomanda cautela" + st("sil","4.5") + ".")
+    ],
+    tadalafil:[
+      I(["nitrati","nicorandil","molsidomina"], "stop", "<b>Nitrati, nicorandil, molsidomina: controindicati</b>, ipotensione sistemica profonda" + pg(S4B) + st("tad","4.3") + "."),
+      I(["riociguat"], "stop", "<b>Riociguat: controindicato</b>" + pg(S4B) + st("tad","4.3") + "; <b>III B</b>" + pg(RT10) + "."),
+      I(["rifampicina","fenitoina","carbamazepina","iperico"], "stop", "<b>Rifampicina e induttori potenti del CYP3A4:</b> in uso cronico «non è raccomandato» (rifampicina: −88%)" + st("tad","4.4, 4.5") + "; i nomi degli altri dalla scheda della combinazione con macitentan" + st("mt","4.5") + "."),
+      I(["ketoconazolo","itraconazolo","voriconazolo","claritromicina","ritonavir","saquinavir"], "stop", "<b>Ketoconazolo, ritonavir e inibitori potenti del CYP3A4:</b> in uso cronico «non è raccomandato»" + st("tad","4.4, 4.5") + "; i nomi degli altri dalla scheda della combinazione con macitentan" + st("mt","4.5") + "."),
+      I(["alfabloccanti"], "stop", "<b>Doxazosina:</b> «non è raccomandata»" + st("tad","4.4, 4.5") + "."),
+      I(["pde5altri","sildenafil"], "stop", "<b>Altri inibitori della PDE5:</b> non si associano" + st("tad","4.5") + "."),
+      I(["bosentan"], "warn", "<b>Bosentan:</b> tadalafil −42%, forse nessun aggiustamento" + pg(S4B) + "; efficacia non dimostrata in modo conclusivo" + st("tad","4.5") + ". Aggiungere il tadalafil al bosentan è IIb C" + pg(RT10) + "."),
+      I(["prostanoide"], "warn", "<b>Prostaciclina e analoghi:</b> non studiati, cautela" + st("tad","4.5") + ".")
+    ],
+    riociguat:[
+      I(["sildenafil","tadalafil","pde5altri"], "stop", "<b>Inibitori della PDE5: controindicati</b>" + pg(S4B) + st("rio","4.3") + "; <b>III B</b>" + pg(RT10) + ". Per il passaggio: sildenafil sospeso almeno 24 ore prima, tadalafil almeno 48 ore (72 nel bambino)" + st("rio","4.2") + "."),
+      I(["nitrati","nicorandil","molsidomina"], "stop", "<b>Nitrati, nicorandil, molsidomina: controindicati</b>, ipotensione sistemica profonda" + pg(S4B) + st("rio","4.3") + "."),
+      I(["ketoconazolo","itraconazolo","posaconazolo","ritonavir"], "mod", "<b>Inibitori potenti multivia:</b> se è già stabile sull'inibitore si considera un inizio di 0,5 mg ×3/die, e si riduce con sintomi di ipotensione a dosi ≥ 1 mg; se è già stabile sul riociguat, iniziare l'inibitore «non è raccomandato»" + st("rio","4.2, 4.5") + ".", { ini:"0,5 mg ×3/die", ber:"secondo tolleranza, fino a 2,5 mg ×3/die", pedNo:"<b>Inibitori potenti multivia, nel bambino: la scheda del granulato dice due cose.</b> Di considerare un inizio equivalente a 0,5 mg, da 1,0 a 2,2 mL ×3/die secondo il peso (sua Tab. 2), e che in questi bambini «non ci sono dati clinici»; gli studi d'interazione sono solo negli adulti" + st("rio","4.2, 4.5") + ". <b>Regola del medico: " + ND + ".</b>" }),
+      I(["antiacidi"], "warn", "<b>Antiacidi:</b> almeno 2 ore prima o 1 ora dopo (−34%)" + st("rio","4.5") + "."),
+      I(["bosentan","fenitoina","carbamazepina","iperico","rifampicina"], "warn", "<b>Bosentan (−27%) e induttori potenti del CYP3A4:</b> seguire la titolazione" + st("rio","4.5") + ". Aggiungere il riociguat al bosentan è IIa B per l'esercizio" + pg(RT10) + "."),
+      I(["erlotinib"], "warn", "<b>Erlotinib, gefitinib:</b> cautela" + st("rio","4.5") + "."),
+      I(["ciclosporina"], "warn", "<b>Ciclosporina:</b> cautela" + st("rio","4.5") + "."),
+      I(["fumo"], "warn", "<b>Fumo:</b> esposizione −50–60%: può servire la dose massima, da ridurre se smette" + st("rio","4.2, 4.5") + "."),
+      I(["antitrombotici"], "warn", "<b>Anticoagulanti:</b> attenzione all'emottisi; da evitare con emottisi grave o embolizzazione bronchiale" + st("rio","4.4") + "."),
+      I(["ambrisentan","macitentan"], "info", "<b>Con un antagonista dell'endotelina:</b> associazione prevista dalla scheda" + st("rio","4.1") + ".")
+    ],
+    selexipag:[
+      I(["gemfibrozil"], "stop", "<b>Gemfibrozil: controindicato</b> (metabolita attivo ×11)" + st("sel","4.3, 4.5") + ". " + DS + "la Tab. S4 dice da evitare" + pg(S4B) + ": vale la scheda."),
+      I(["clopidogrel","deferasirox","teriflunomide"], "mod", "<b>Clopidogrel, deferasirox, teriflunomide:</b> dose giornaliera dimezzata: metà di ciascuna dose due volte al giorno, oppure una volta al giorno se manca la compressa giusta" + st("sel","4.2, 4.5") + "; per il clopidogrel la metà anche nella Tab. S4" + pg(S4B) + ". Tolto l'inibitore si risale, mai oltre 1600 µg ×2/die.", { ini:"100 µg ×2/die, oppure 200 µg ×1/die", ber:"metà della dose tollerata" }),
+      I(["rifampicina","carbamazepina","fenitoina"], "warn", "<b>Induttori del CYP2C8:</b> metabolita attivo dimezzato: un aggiustamento potrebbe servire, senza un numero" + st("sel","4.5") + "."),
+      I(["valproato","fluconazolo"], "warn", "<b>Acido valproico, probenecid, fluconazolo:</b> non studiati, prudenza" + st("sel","4.5") + ".")
+    ],
+    iloprost:[
+      I(["vasodilatatori"], "warn", "<b>Antipertensivi e vasodilatatori:</b> effetto potenziato, può servire adattare la dose" + st("ilo","4.5") + "."),
+      I(["antitrombotici"], "warn", "<b>Anticoagulanti e antiaggreganti:</b> più sanguinamenti: controllo attento" + st("ilo","4.5") + ".")
+    ],
+    epoprostenolo:[
+      I(["antitrombotici"], "warn", "<b>Anticoagulanti, FANS, antiaggreganti:</b> più sanguinamenti; coagulazione da seguire" + st("epo","4.5") + "."),
+      I(["vasodilatatori"], "warn", "<b>Altri vasodilatatori:</b> effetto reciprocamente aumentato" + st("epo","4.5") + "."),
+      I(["digossina"], "warn", "<b>Digossina:</b> concentrazioni più alte, conta in chi è predisposto all'intossicazione" + st("epo","4.5") + ".")
+    ],
+    treprostinil:[
+      I(["gemfibrozil","trimetoprim","deferasirox"], "warn", "<b>Inibitori del CYP2C8:</b> il gemfibrozil raddoppia l'esposizione: considerare la riduzione quando si aggiungono o si tolgono, senza un numero" + st("tre","4.5") + "."),
+      I(["rifampicina","fenitoina","carbamazepina","iperico"], "warn", "<b>Induttori del CYP2C8:</b> considerare l'aumento, senza un numero" + st("tre","4.5") + "."),
+      I(["vasodilatatori"], "warn", "<b>Diuretici, antipertensivi, vasodilatatori:</b> più ipotensione" + st("tre","4.5") + "."),
+      I(["antitrombotici"], "warn", "<b>Antiaggreganti, FANS, anticoagulanti:</b> più sanguinamento; altri inibitori piastrinici da evitare in chi prende un anticoagulante" + st("tre","4.5") + ".")
+    ]
+  };
+  INTER.sildenafil_ev = INTER.sildenafil.slice(0);
+  INTER.sildenafil_ev[4] = I(["eritromicina"], "mod", "<b>Eritromicina:</b> da considerare 10 mg ×2/die" + st("sil","4.5") + ".", { ini:"10 mg ×2/die", ber:"10 mg ×2/die, da considerare" });
+  INTER.sildenafil_ev[5] = I(["claritromicina"], "mod", "<b>Claritromicina, telitromicina, nefazodone:</b> 10 mg una volta al giorno" + st("sil","4.5") + ".", { ini:"10 mg ×1/die", ber:"10 mg ×1/die" });
+
+  var NOTA_T19 = "Dosi d'uso comune nella pratica: non escludono dosi diverse" + pg(T19) + ".";
+  var CCB_RT = "Solo in IPAH, HPAH o DPAH che rispondono al test: alte dosi <b>I C</b>; rivalutazione completa dopo 3–4 mesi, cateterismo compreso, <b>I C</b>" + pg(RT7) + ". Le dosi si raggiungono gradualmente" + pg("ESC/ERS 2022, p. 3663") + ". Responder e controllo: Tool Cateterismo IP.";
+
+  var FARMACI = {
+    amlodipina:{ nome:"Amlodipina", sott:"calcioantagonista, per bocca", ccb:true, it:"in commercio; nessuna indicazione nell'IP",
+      ini:"5 mg/die", ber:"15–30 mg/die", nota:"<b>a</b> In una dose o divisa in due." + pg(T19),
+      sch:"<b>Tetto della scheda 10 mg/die</b>, e nessuna indicazione per l'IP: i 15–30 mg/die della Tab. 19 sono fuori scheda, solo in chi risponde al test, titolati, con il controllo a 3–4 mesi" + st("aml","4.1, 4.2") + ".",
+      ci:"ipotensione grave; shock, anche cardiogeno; stenosi aortica serrata; scompenso con instabilità emodinamica dopo infarto acuto" + st("aml","4.3") + ".",
+      mon:"pressione, soprattutto agli aumenti di dose; edemi; cautela nello scompenso in classe NYHA III–IV" + st("aml","4.4") + "." },
+    diltiazem:{ nome:"Diltiazem", sott:"calcioantagonista, per bocca", ccb:true, serveCl:true, sg:[{ v:60 }], it:"in commercio; nessuna indicazione nell'IP",
+      ini:"60 mg ×2/die", ber:"120–360 mg ×2/die, cioè 240–720 mg/die", nota:"<b>b</b> Alcune formulazioni si danno una o tre volte al giorno." + pg(T19),
+      sch:"<b>Tetto della scheda 360 mg/die</b> (angina; 240–300 con le forme prolungate), e nessuna indicazione per l'IP: i 240–720 mg/die sono fuori scheda, solo in chi risponde al test, titolati, con il controllo a 3–4 mesi. L'inizio 60 mg ×2 non è uno schema della scheda: 60 mg è ×3, ×2 è la sola 120 mg; meglio non cambiare formulazione a rilascio controllato" + st("dil","4.1, 4.2") + ".",
+      ci:"PAS &lt; 90 mmHg; infarto acuto con congestione polmonare; malattia del nodo del seno, BSA, BAV II–III senza pacemaker, FC &lt; 40/min; <b>insufficienza cardiaca congestizia</b>; insufficienza ventricolare sinistra con stasi polmonare; gravidanza, allattamento, <b>donne in età fertile</b>; età pediatrica" + st("dil","4.3") + ".",
+      mon:"frequenza all'inizio; ECG con BAV di I grado e con beta-bloccanti o antiaritmici; funzione renale (insufficienza renale acuta da ridotta perfusione); funzione epatica periodica; glicemia nel diabete; pressione" + st("dil","4.4") + "." },
+    felodipina:{ nome:"Felodipina", sott:"calcioantagonista, per bocca", ccb:true, it:"in commercio, solo 5 e 10 mg; nessuna indicazione nell'IP",
+      ini:"5 mg/die", ber:"15–30 mg/die", nota:"<b>a</b> In una dose o divisa in due." + pg(T19),
+      sch:"<b>Tetto della scheda 10 mg/die</b>, e nessuna indicazione per l'IP: i 15–30 mg/die sono fuori scheda, solo in chi risponde al test, titolati, con il controllo a 3–4 mesi. Le compresse a rilascio prolungato non si dividono" + st("fel","4.1, 4.2") + ".",
+      ci:"gravidanza; insufficienza cardiaca non compensata; infarto acuto; angina instabile; ostruzione valvolare significativa o dinamica all'efflusso" + st("fel","4.3") + ".",
+      mon:"pressione; edema alle caviglie, dose-dipendente; igiene gengivale" + st("fel","4.4") + "." },
+    nifedipina:{ nome:"Nifedipina", sott:"calcioantagonista, per bocca", ccb:true, it:"in commercio; a rilascio immediato solo in gocce; nessuna indicazione nell'IP",
+      ini:"10 mg ×3/die", ber:"20–60 mg ×2 o ×3/die, cioè 40–180 mg/die", nota:"Si parte con lo schema del rilascio immediato." + pg(T19),
+      sch:"<b>Tetti della scheda:</b> rilascio immediato <b>60 mg/die</b> (in Italia solo in gocce), rilascio prolungato <b>120 mg/die</b> nell'angina (60 nell'ipertensione), e nessuna indicazione per l'IP: le dosi fino a 180 mg/die sono fuori scheda, solo in chi risponde al test, titolate, con il controllo a 3–4 mesi" + st("nif","4.1, 4.2") + ".",
+      ci:"shock; rifampicina; gravidanza e allattamento (una formulazione a rilascio prolungato: gravidanza fino alla 20ª settimana); stenosi aortica marcata; a rilascio immediato anche angina instabile e infarto recente" + st("nif","4.3") + ".",
+      mon:"pressione, con prudenza sotto 90 mmHg di sistolica; glicemia nei diabetici; scompenso manifesto e stenosi aortica grave; a rilascio immediato, sopra 60 mg/die la scheda segnala più mortalità nella cardiopatia ischemica" + st("nif","4.4") + "." },
+
+    ambrisentan:{ nome:"Ambrisentan", sott:"antagonista dell'endotelina, per bocca", s3:[["per bocca","I","A"]], tr:true, sint:true, sg:[{ v:30 }], it:"in commercio; un generico in carenza",
+      ini:"5 mg/die", ber:"10 mg/die", nota:"",
+      sch:"In monoterapia 5 mg, fino a 10 mg secondo risposta e tolleranza; con il tadalafil 10 mg. Compresse intere. Indicazione: adulti in classe OMS II–III" + st("amb","4.1, 4.2") + ".",
+      ci:"ipersensibilità, anche alla soia; gravidanza; età fertile senza contraccezione efficace; allattamento; compromissione epatica severa; AST o ALT di base &gt; 3 × LSN; <b>fibrosi polmonare idiopatica</b>" + st("amb","4.3") + ".",
+      mon:"ALT e AST prima di iniziare e ogni mese; emoglobina dopo 1 e 3 mesi, poi periodicamente; ritenzione di liquidi ed edema; test di gravidanza ogni mese; edema polmonare → pensare alla PVOD" + st("amb","4.4") + "." },
+    bosentan:{ nome:"Bosentan", sott:"antagonista dell'endotelina, per bocca", s3:[["per bocca","I","A"]], tr:true, sint:true, it:"in commercio, anche le dispersibili da 32 mg; tre generici in carenza",
+      ini:"62,5 mg ×2/die", ber:"125 mg ×2/die", nota:"",
+      sch:"62,5 mg ×2 per 4 settimane, poi 125 mg ×2; stesso schema alla reintroduzione. La scheda nomina 250 mg ×2 nel deterioramento tardivo, con attenta valutazione perché la tossicità epatica è dose-dipendente; la Tab. 19 no. Sospensione graduale, dimezzando per 3–7 giorni. Iniziare solo con PAS &gt; 85 mmHg. Indicazione: classe OMS III, miglioramenti anche in II" + st("bos","4.1, 4.2, 4.4") + ".",
+      ci:"ipersensibilità; Child-Pugh B o C; AST o ALT di base &gt; 3 × LSN; ciclosporina; gravidanza; età fertile senza contraccezione affidabile; dispersibili: fenilchetonuria" + st("bos","4.3") + ".",
+      mon:"transaminasi prima, ogni mese e 2 settimane dopo ogni aumento di dose" + st("bos","4.4") + "; funzione epatica ogni mese" + pg("ESC/ERS 2022, p. 3665") + "; emoglobina ogni mese per 4 mesi, poi ogni 3; ritenzione di liquidi e peso; INR con warfarin; colesterolo con simvastatina; test di gravidanza ogni mese" + st("bos","4.4") + "." },
+    macitentan:{ nome:"Macitentan", sott:"antagonista dell'endotelina, per bocca", s3:[["per bocca","I","B"]], tr:true, bil:"Bilirubina &gt; 2 × LSN", sint:true, serveCl:true, sg:[{ v:30 }], it:"10 mg in commercio; le dispersibili pediatriche no; nessun generico in commercio",
+      ini:"10 mg/die", ber:"10 mg/die", nota:"",
+      sch:"10 mg una volta al giorno, nessuna titolazione. Indicazione: classi OMS II–III" + st("mac","4.1, 4.2") + ".",
+      ci:"ipersensibilità, anche alla soia; gravidanza; età fertile senza contraccezione efficace; allattamento; compromissione epatica severa; AST o ALT di base &gt; 3 × LSN" + st("mac","4.3") + ".",
+      mon:"ALT e AST prima di iniziare e ogni mese; emoglobina prima di iniziare, non iniziare con anemia severa" + st("mac","4.4") + "; Hb ≤ 8 g/dL nel 4,3% dei trattati con 10 mg" + pg("ESC/ERS 2022, p. 3666") + "; con il rene compromesso pressione ed emoglobina; test di gravidanza ogni mese, e niente gravidanza per un mese dopo lo stop; edema polmonare → pensare alla PVOD" + st("mac","4.4, 4.6") + "." },
+    sildenafil:{ nome:"Sildenafil", sott:"inibitore della PDE5, per bocca", s3:[["per bocca","I","A"]], it:"in commercio, anche la sospensione; un generico in carenza",
+      ini:"20 mg ×3/die", ber:"20 mg ×3/die", nota:"<b>c</b> Approvato a 20 mg ×3; nella pratica le dosi variano molto e a volte sono più alte." + pg(T19),
+      sch:"20 mg ×3, senza titolazione: le dosi più alte della nota c sono fuori scheda. Indicazione: classi OMS II–III; altre forme di PAH non raccomandato; mai nell'IP da anemia falciforme" + st("sil","4.1, 4.2, 4.4") + ".",
+      ci:"nitrati e donatori di NO; riociguat; ketoconazolo, itraconazolo, ritonavir; perdita della vista da NAION; grave compromissione epatica, ictus o infarto recenti, PA &lt; 90/50 mmHg all'inizio" + st("sil","4.3") + ".",
+      mon:"nessun esame di laboratorio; pressione; disturbi visivi improvvisi: sospendere; sanguinamenti con gli antagonisti della vitamina K; priapismo oltre 4 ore" + st("sil","4.4") + "." },
+    sildenafil_ev:{ nome:"Sildenafil e.v.", sott:"inibitore della PDE5, in bolo e.v.", it:"in commercio, classe H",
+      ini:"10 mg ×3/die in bolo", ber:"10 mg ×3/die: dosi maggiori non stabilite", nota:"La Tab. 19 non ne parla: la dose è della scheda.",
+      sch:"Solo come ponte, nell'adulto già in sildenafil per bocca che temporaneamente non può prenderlo ed è stabile: 10 mg equivalgono a 20 mg per bocca; non raccomandato nel paziente instabile" + st("sil","4.1, 4.2") + ".",
+      ci:"le stesse del sildenafil per bocca: nitrati, riociguat, ketoconazolo, itraconazolo, ritonavir, NAION, grave compromissione epatica, ictus o infarto recenti, PA &lt; 90/50 mmHg" + st("sil","4.3") + ".",
+      mon:"pressione; disturbi visivi improvvisi: sospendere" + st("sil","4.4") + "." },
+    tadalafil:{ nome:"Tadalafil", sott:"inibitore della PDE5, per bocca", s3:[["per bocca","I","B"]], serveCl:true, sg:[{ v:30, le:true }, { v:80, le:true }], it:"20 mg in commercio; la sospensione no; il generico per la PAH in carenza",
+      ini:"20 o 40 mg/die", ber:"40 mg/die", nota:"",
+      sch:"La scheda dà 40 mg al giorno subito, senza titolazione; 20 mg solo con rene lieve-moderato o Child-Pugh A–B. Indicazione: classi WHO II–III" + st("tad","4.1, 4.2") + ".",
+      ci:"infarto negli ultimi 90 giorni; PA &lt; 90/50 mmHg; nitrati; riociguat; NAION" + st("tad","4.3") + ". Non raccomandato, nessun dato: valvulopatia aortica o mitralica significativa, costrizione pericardica, cardiomiopatia restrittiva o congestizia, importante disfunzione ventricolare sinistra, aritmie pericolose, coronaropatia sintomatica, ipertensione non controllata; <b>PVOD</b>; retinite pigmentosa" + st("tad","4.4") + ".",
+      mon:"nessun esame di laboratorio; pressione; vista e udito: sospendere per disturbi improvvisi; priapismo da 4 ore" + st("tad","4.4") + "." },
+    riociguat:{ nome:"Riociguat", sott:"stimolatore della guanilato ciclasi, per bocca", s3:[["per bocca","I","B"]], tr:true, trPre:true, bil:"Bilirubina diretta &gt; 2 × LSN", serveCl:true, sg:[{ v:30 }, { v:80 }], it:"compresse in commercio; il granulato pediatrico no",
+      ini:"1 mg ×3/die", ber:"2,5 mg ×3/die", nota:"<b>d</b> Con rischio di ipotensione si può partire da 0,5 mg ×3/die." + pg(T19),
+      sch:"1 mg ×3 per 2 settimane, poi +0,5 mg ×3 ogni 2 settimane se PAS ≥ 95 mmHg senza sintomi, massimo 2,5 mg ×3; PAS &lt; 95 senza sintomi: si resta; con sintomi: −0,5 mg ×3. Dopo ≥ 3 giorni di pausa si riparte da 1 mg. Indicazione: PAH in classe OMS II–III, da solo o con un antagonista dell'endotelina; CTEPH inoperabile o persistente dopo chirurgia" + st("rio","4.1, 4.2") + ".",
+      ci:"inibitori della PDE5; Child-Pugh C; gravidanza; nitrati o donatori di NO; PAS &lt; 95 mmHg all'inizio (&lt; 90 fra 6 e &lt; 12 anni); <b>IP da polmonite interstiziale idiopatica</b>" + st("rio","4.3") + ". Da evitare con emottisi grave o embolizzazione bronchiale" + st("rio","4.4") + ".",
+      mon:"PAS a ogni passo di titolazione; ipotensione dopo un passaggio da un inibitore della PDE5; emottisi; test di gravidanza ogni mese; edema polmonare → sospettare la PVOD e sospendere" + st("rio","4.4") + "." },
+    selexipag:{ nome:"Selexipag", sott:"agonista del recettore IP, per bocca", s3:[["per bocca","I","B"]], egfr:true, it:"in commercio; generici mai commercializzati",
+      ini:"200 µg ×2/die", ber:"dose massima tollerata, fino a 1600 µg ×2/die", nota:"",
+      sch:"Prima dose la sera; +200 µg ×2 di solito ogni settimana; dopo ≥ 3 giorni di pausa si riprende più in basso. Con il cibo, compresse non divise. Oltre 75 anni esperienza limitata. Indicazione: classi WHO II–III, in associazione, o da solo in chi non è candidabile a un ERA o a un PDE5i" + st("sel","4.1, 4.2") + ".",
+      ci:"coronaropatia severa o angina instabile; infarto negli ultimi 6 mesi; scompenso non compensato, se non sotto stretta supervisione; aritmie severe; eventi cerebrovascolari negli ultimi 3 mesi; valvulopatie con disfunzione miocardica non legata all'IP; gemfibrozil" + st("sel","4.3") + ".",
+      mon:"pressione; tiroide se compare ipertiroidismo; emoglobina (&lt; 10 g/dL nell'8,6%); edema polmonare → pensare alla PVOD" + st("sel","4.4, 4.8") + "." },
+    iloprost:{ nome:"Iloprost inalatorio", sott:"analogo della prostaciclina", s3:[["inalatorio","I","B"]], serveCl:true, sg:[{ v:30, le:true }], it:"in commercio; generici in carenza o fermi",
+      ini:"2,5 µg 6–9 volte/die", ber:"5,0 µg 6–9 volte/die", nota:"<b>e</b> Dosi per nebulizzatore: con altri dispositivi possono cambiare." + pg(T19),
+      sch:"2,5 µg al boccaglio alla prima inalazione, poi 5 µg se tollerati, 6–9 sedute al giorno; non oltre 5 µg per seduta; il nebulizzatore fa parte della posologia. Indicazione: solo IP idiopatica in classe NYHA III" + st("ilo","4.1, 4.2") + ".",
+      ci:"rischio emorragico; coronaropatia grave o angina instabile; infarto negli ultimi 6 mesi; scompenso non compensato, se non sotto stretto controllo; aritmie gravi; eventi cerebrovascolari negli ultimi 3 mesi; <b>IP da occlusione venosa (PVOD)</b>; valvulopatie con disfunzione miocardica non legata all'IP" + st("ilo","4.3") + ".",
+      mon:"non iniziare con PAS &lt; 85 mmHg; broncospasmo; edema polmonare → pensare alla PVOD e interrompere; rebound alla sospensione" + st("ilo","4.4") + "." },
+    epoprostenolo:{ nome:"Epoprostenolo e.v.", sott:"analogo della prostaciclina, infusione continua", s3:[["e.v.","I","A"]], sg:[{ v:60 }], inf:2, it:"in commercio",
+      ini:"2 ng/kg/min", ber:"secondo tolleranza ed efficacia; a 1 anno di solito 16–30 ng/kg/min, con ampia variabilità", nota:"",
+      sch:"Solo infusione continua. Ricerca della dose da 2 ng/kg/min, +2 ogni 15 minuti o più; in cronico si parte 4 ng/kg/min sotto la massima tollerata (1 ng/kg/min se quella era ≤ 5); aumenti di 1–2 ng/kg/min; nessuna dose massima. <b>Mai interruzioni brusche: rebound, anche fatale.</b> Indicazione: IAP idiopatica, ereditaria e da connettivopatia in classe III–IV" + st("epo","4.1, 4.2") + ".",
+      ci:"grave disfunzione del ventricolo sinistro; uso cronico in chi fa edema polmonare in titolazione; estrema attenzione nella malattia coronarica" + st("epo","4.3, 4.4") + ".",
+      mon:"pressione e frequenza per ore dopo ogni cambio; coagulazione con gli anticoagulanti; glicemia; digossina; sepsi e infezioni del catetere" + st("epo","4.4") + "." },
+    treprostinil:{ nome:"Treprostinil s.c. o e.v.", sott:"analogo della prostaciclina, infusione continua", s3:[["s.c.","I","B"],["e.v.","IIa","C"]], ind:true, serveClCteph:true, sg:[{ v:60 }], inf:1.25, it:"in commercio",
+      ini:"1,25 ng/kg/min", ber:"secondo tolleranza ed efficacia; a 1 anno di solito 25–60 ng/kg/min, con ampia variabilità", nota:"",
+      sch:"S.c. continua, via di elezione; e.v. in chi non tollera la s.c. Inizio 1,25 ng/kg/min, 0,625 se mal tollerato; +1,25 alla settimana per 4 settimane, poi +2,5 alla settimana; nessun massimo. <b>Con peso oltre il 30% sopra l'ideale, dose iniziale e incrementi sul peso ideale.</b> Indicazioni: IAP idiopatica o ereditaria in classe NYHA III (in classe IV beneficio della s.c. non stabilito); CTEPH in classe III–IV con il prodotto s.c. dedicato" + st("tre","4.1, 4.2, 4.4") + st("trec","4.1, 4.2") + ".",
+      ci:"<b>PVOD</b>; grave disfunzione del ventricolo sinistro; Child-Pugh C; ulcera attiva, emorragia intracranica, traumi; valvulopatie con disfunzione miocardica non legata all'IP; coronaropatia grave o angina instabile; infarto negli ultimi 6 mesi; aritmie gravi; eventi cerebrovascolari negli ultimi 3 mesi; nella CTEPH anche altri prostanoidi" + st("tre","4.3") + st("trec","4.3") + ".",
+      mon:"pressione e frequenza a ogni cambio; sospendere con sintomi o PAS ≤ 85 mmHg; edema polmonare → interrompere; infezioni da catetere con la via e.v.; pompa di riserva" + st("tre","4.4") + "." },
+
+    /* non in commercio in Italia: la classe resta, il farmaco non c'è */
+    beraprost:{ nome:"Beraprost sodico", sott:"analogo della prostaciclina, per bocca", tipo:"nit", s3:[["per bocca","IIb","B"]],
+      ini:"20 µg ×3/die", ber:"dose massima tollerata, fino a 40 µg ×3/die",
+      perche:"Nessuna scheda tecnica in UE, Italia, Regno Unito né USA" + pg(AIFA) + "; non approvato in Europa" + pg("ESC/ERS 2022, p. 3667") + ". Regola renale non definibile; nel bambino nessuna dose." },
+    beraprost_rp:{ nome:"Beraprost a rilascio prolungato", sott:"analogo della prostaciclina, per bocca", tipo:"nit", s3:[["per bocca","IIb","B"]],
+      ini:"60 µg ×2/die", ber:"dose massima tollerata, fino a 180 µg ×2/die",
+      perche:"Nessuna scheda tecnica in UE, Italia, Regno Unito né USA" + pg(AIFA) + "; non approvato in Europa" + pg("ESC/ERS 2022, p. 3667") + ". Regola renale non definibile; nel bambino nessuna dose." },
+    treprostinil_os:{ nome:"Treprostinil per bocca", sott:"analogo della prostaciclina", tipo:"nit", s3:[["per bocca","IIb","B"]],
+      ini:"0,25 mg ×2/die o 0,125 mg ×3/die", ber:"dose massima tollerata",
+      perche:"Non esiste in UE né in Italia" + pg(AIFA) + "; non approvato in Europa" + pg("ESC/ERS 2022, p. 3667") + ". La Rec. Table 10 lo raccomanda in aggiunta, <b>I B</b>" + pg(RT10) + ": la classe resta, il farmaco in Italia non c'è. Per informazione, etichetta FDA di treprostinil orale, 08/2023: rene nessun aggiustamento; Child-Pugh A inizio 0,125 mg ×2, B da evitare, C controindicato; con il gemfibrozil inizio 0,125 mg ×2. Nel bambino nessuna dose." },
+    treprostinil_in:{ nome:"Treprostinil inalatorio", sott:"analogo della prostaciclina", tipo:"nit", s3:[["inalatorio","IIb","C"]],
+      ini:"18 µg 4 volte/die", ber:"54–72 µg 4 volte/die", nota:"<b>e</b> Dosi per nebulizzatore: con altri dispositivi possono cambiare." + pg(T19),
+      perche:"Non esiste in UE né in Italia: la domanda all'EMA è stata ritirata nel 2010" + pg(AIFA) + "; non approvato in Europa" + pg("ESC/ERS 2022, p. 3667") + ". La Rec. Table 10 lo considera in aggiunta a sildenafil o bosentan, <b>IIa B</b>" + pg(RT10) + ": la classe resta, il farmaco in Italia non c'è. Per informazione, etichetta FDA di treprostinil inalatorio, 05/2022: rene nessun aggiustamento; fegato: titolare lentamente, insufficienza severa non studiata. Nel bambino nessuna dose." },
+    selexipag_ev:{ nome:"Selexipag e.v.", sott:"agonista del recettore IP", tipo:"nit",
+      ini:"non nella Tab. 19", ber:"non nella Tab. 19",
+      perche:"Non autorizzato in UE né in Italia" + pg(AIFA) + ". Per informazione, etichetta FDA di selexipag, 05/2026: nell'adulto che temporaneamente non può prenderlo per bocca, due infusioni al giorno di 80 minuti alla dose corrispondente, da 225 µg per 200 µg fino a 1800 µg per 1600 µg. Nel bambino nessuna dose." },
+    mt:{ nome:"Macitentan/tadalafil", sott:"combinazione fissa, per bocca", tipo:"nit",
+      ini:"una compressa da 10/40 mg/die", ber:"chi prende già macitentan 10 mg e tadalafil 20 mg passa a 10/20 mg, aumentabile a 10/40 mg",
+      perche:"Autorizzata in UE il 27/09/2024; in Italia autorizzata e mai messa in commercio" + pg(AIFA) + ". <b>Solo come sostituzione</b> in chi è già in terapia con i due farmaci separati, non come combinazione iniziale" + st("mt","4.1, 4.2") + ". Rene: lieve-moderata nessuna modifica; ClCr &lt; 30 e dialisi «non raccomandato», " + ND + st("mt","4.2, 4.4") + ". Fegato: Child-Pugh C e AST o ALT di base &gt; 3 × LSN controindicati" + st("mt","4.3") + ". Sotto 18 anni non studiata: " + ND + st("mt","4.2") + ". I due componenti, uno per uno, hanno le loro voci in questo strumento." },
+
+    iloprost_ev:{ nome:"Iloprost e.v.", sott:"analogo della prostaciclina", tipo:"nod", s3:[["e.v.","IIa","C"]], it:"in commercio, ma non per l'IP; un generico in carenza",
+      perche:"<b>Nessuna dose, decide lo specialista.</b> La Tab. S3 lo classifica in monoterapia" + pg(S3) + ", ma né la Tab. 19 né il supplementare ne danno la dose. In Italia l'iloprost e.v. esiste solo per la tromboangioite obliterante, il Raynaud da sclerodermia e l'ischemia critica degli arti (cicli di 6 ore al giorno, fino a 2,0 ng/kg/min, al massimo 4 settimane): nessuna scheda lo autorizza nell'IP né dà una dose per l'IP" + st("iloev","4.1, 4.2") + ". La scheda controindica lo scompenso NYHA II–IV e il sospetto di congestione polmonare" + st("iloev","4.3") + "." },
+
+    sotatercept:{ nome:"Sotatercept", sott:"inibitore della segnalazione dell'activina, s.c.", tipo:"rim", it:"in commercio",
+      perche:"Dose per peso, volume, criteri di posticipo, pausa oltre 9 settimane, rene in eGFR: <b>Tool Sotatercept</b>. La Tab. 19 non lo nomina: nella ESC/ERS 2022 è solo un farmaco in fase 3" + pg("ESC/ERS 2022, p. 3674") + ". Sotto 18 anni non stabilita, nessun dato: " + ND + pg("scheda tecnica di sotatercept, EMA, testo dell'11/06/2026, § 4.2") + "." },
+
+    /* test di vasoreattività: Tab. 12, p. 3647; nessuna scheda ha questa indicazione */
+    no_test:{ nome:"Ossido nitrico inalatorio, per il test", sott:"test di vasoreattività", tipo:"test",
+      ini:"10–20 ppm", ber:"misura a 5–10 minuti, un solo gradino dentro l'intervallo; emivita 15–30 secondi",
+      sch:"Nessuna scheda ha il test di vasoreattività fra le indicazioni; la dose della Tab. 12 sta dentro gli intervalli delle schede. Le schede prevedono l'erogazione in ventilazione meccanica" + st("no","4.1, 4.2") + ".",
+      ci:"neonati dipendenti da shunt destro-sinistro o con significativo shunt sinistro-destro; una scheda nazionale anche la disfunzione ventricolare sinistra, gravidanza e allattamento" + st("no","4.3") + ".",
+      mon:"metaemoglobina entro 1 ora; NO₂ &lt; 0,5 ppm, sopra 1 ppm ridurre subito; cautela con disfunzione del ventricolo sinistro e PCWP alta; con il sildenafil effetti additivi; rene: la scheda tace, nessuna regola di dose" + st("no","4.2, 4.4, 4.5") + "." },
+    ilo_test:{ nome:"Iloprost inalatorio, per il test", sott:"test di vasoreattività", tipo:"test",
+      ini:"5–10 µg al boccaglio", ber:"misura a 10–15 minuti, un solo gradino, aspettando l'effetto pieno; emivita 30 minuti",
+      sch:"Il test non è un'indicazione della scheda, e i 10 µg della Tab. 12 superano i 5 µg per seduta" + st("ilo","4.1, 4.2") + ".",
+      ci:"le stesse dell'iloprost inalatorio, PVOD compresa" + st("ilo","4.3") + ".",
+      mon:"non iniziare con PAS &lt; 85 mmHg; broncospasmo; rene e fegato: la regola della terapia è nella voce iloprost inalatorio" + st("ilo","4.2, 4.4") + "." },
+    epo_test:{ nome:"Epoprostenolo e.v., per il test", sott:"test di vasoreattività", tipo:"test",
+      ini:"2–12 ng/kg/min", ber:"aumenti di 2 ng/kg/min, 10 minuti per gradino; emivita 3 minuti",
+      sch:"Il test non è un'indicazione della scheda. La scheda ha una fase acuta simile, con aumenti ogni 15 minuti o più, per scegliere la dose cronica" + st("epo","4.1, 4.2") + ".",
+      ci:"grave disfunzione del ventricolo sinistro; edema polmonare durante la titolazione" + st("epo","4.3") + ".",
+      mon:"pressione e frequenza; rene e fegato: la scheda tace" + st("epo","4.2, 4.4") + "." }
+  };
+  // Granulato di riociguat, dose singola in mL tre volte al giorno, 0,15 mg/mL: Tab. 1 della scheda, immagine p. 29.
+  var GRAN = [[12,14,1.8,2.6,3.4,4.2],[14,16,1.8,2.8,3.8,4.6],[16,18,2.0,3.2,4.2,5.0],[18,20,2.2,3.4,4.4,5.5],[20,25,2.6,3.8,5.0,6.5],[25,30,3.0,4.4,6.0,7.5],[30,35,3.4,5.0,6.5,8.5],[35,40,3.8,5.5,7.5,9.5],[40,50,4.4,6.5,9.0,11.0]];
+
+  /* ═══ FUNZIONI PURE ═════════════════════════════════════════════════════ */
+  function inScala(v, k) { return v !== null && v !== undefined && !isNaN(v) && v >= DOM[k][0] && v <= DOM[k][1]; }
+  function nf(x, d) { if (d === undefined) d = 1; var p = Math.pow(10, d); x = Math.round(x * p) / p; return String(x).replace(".", ","); }
+  function RN(k, t, ini, ber, inf) { return { k:k, t:t, ini:ini, ber:ber, inf:inf }; }
+  var ORDINE = { no:5, manca:4, rid:3, cau:2, ok:1, nd:0 };
+  function peggio(a, b) {   // due giudizi sullo stesso organo: vince il più grave, le ragioni restano tutte
+    var o = ORDINE[b.k] > ORDINE[a.k] ? b : a;
+    return RN(o.k, a.t + " " + b.t, o.ini, o.ber, o.inf);
+  }
+
+  function creatMg(s) {
+    if (s.creat === null || s.creat === undefined) return { v:null };
+    if (s.ucr === "umol") {
+      if (s.creat < 9 || s.creat > 1800) return { v:null, fuori:true };
+      return { v:s.creat / SOGLIE.kgCreat, umol:true };
+    }
+    if (s.creat < 0.1 || s.creat > 20) return { v:null, fuori:true };
+    return { v:s.creat };
+  }
+  function pesoIdeale(s) {  // Devine: ideale per il peso aggiustato di componenti.md § 17.2
+    if (!s.sesso || !inScala(s.alt, "alt")) return null;
+    var i = (s.sesso === "f" ? 45.5 : 50) + 0.9 * (s.alt - 152.4);
+    return i > 0 ? i : null;
+  }
+  function clearance(s) {
+    var o = { clcr:null, agg:null, bmi:null, ibw:null, pesoAgg:null, mg:null, manca:[], ped:false, dial:!!s.dialisi };
+    if (inScala(s.peso, "peso") && inScala(s.alt, "alt")) o.bmi = s.peso / Math.pow(s.alt / 100, 2);
+    if (inScala(s.eta, "eta") && s.eta < SOGLIE.adulto) { o.ped = true; return o; }
+    var c = creatMg(s);
+    o.mg = c.v;
+    if (s.eta === null || s.eta === undefined) o.manca.push("età");
+    else if (!inScala(s.eta, "eta")) o.manca.push("età nella scala (0–110 anni)");
+    if (!s.sesso) o.manca.push("sesso");
+    if (s.peso === null || s.peso === undefined) o.manca.push("peso");
+    else if (!inScala(s.peso, "peso")) o.manca.push("peso nella scala (2–300 kg)");
+    if (s.creat === null || s.creat === undefined) o.manca.push("creatinina");
+    else if (c.fuori) o.manca.push("creatinina nella scala dell'unità scelta");
+    if (o.manca.length) return o;
+    var f = s.sesso === "f" ? 0.85 : 1;
+    o.clcr = ((140 - s.eta) * s.peso * f) / (72 * c.v);          // decide il peso reale
+    if (o.bmi !== null && o.bmi >= SOGLIE.bmiAgg) {
+      o.ibw = pesoIdeale(s);
+      if (o.ibw !== null && s.peso > o.ibw) {
+        o.pesoAgg = o.ibw + 0.4 * (s.peso - o.ibw);
+        o.agg = ((140 - s.eta) * o.pesoAgg * f) / (72 * c.v);
+      }
+    }
+    return o;
+  }
+  function sogliaFra(c, sg) {  // la soglia di QUESTO farmaco che passa fra peso reale e peso aggiustato
+    if (c.clcr === null || c.agg === null || !sg) return null;
+    for (var i = 0; i < sg.length; i++) {
+      var v = sg[i].v, a = sg[i].le ? c.clcr <= v : c.clcr < v, b = sg[i].le ? c.agg <= v : c.agg < v;
+      if (a !== b) return v;
+    }
+    return null;
+  }
+  function serveCl(c) { return RN("manca", "<b>Rene: —</b>. Serve la clearance: mancano " + c.manca.join(", ") + "."); }
+
+  /* Rene dell'adulto. ok = nessun aggiustamento; cau = stessa dose, con attenzione; rid = dose cambiata; no = nessuna dose. */
+  var RENE = {
+    amlodipina:function () { return RN("ok", "Nessun aggiustamento: dosaggio normale; non dializzabile" + st("aml","4.2") + "."); },
+    felodipina:function () { return RN("ok", "Nessun aggiustamento, anche in emodialisi" + st("fel","4.2, 5.2") + "."); },
+    nifedipina:function (c) {
+      if (c.dial) return RN("cau", "Dialisi: nessuna dose diversa scritta; rilascio prolungato: «non è necessario un adattamento» col rene compromesso; in dialisi, con ipertensione maligna e ipovolemia, attenzione al calo pressorio" + st("nif","4.2, 4.4") + ".");
+      return RN("ok", "Rilascio prolungato: nessun aggiustamento; gocce: nessuna modifica sostanziale" + st("nif","4.2, 5.2") + ".");
+    },
+    diltiazem:function (c) {
+      if (c.dial) return RN("no", "Dialisi: la scheda tace" + st("dil","4.2") + ": " + ND + ".");
+      if (c.clcr === null) return serveCl(c);
+      if (c.clcr < SOGLIE.irGenerica) return RN("rid", "«Insufficienza renale» senza soglia: ClCr &lt; 60, regola del progetto. Inizio mezza compressa ×3 o 200 mg ×1, poi la dose minima efficace; funzione renale da seguire" + st("dil","4.2, 4.4") + ".", "30 mg ×3/die, oppure 200 mg ×1/die", "la dose minima efficace");
+      return RN("ok", "ClCr ≥ 60: la riduzione della scheda per l'insufficienza renale non scatta" + st("dil","4.2") + ".");
+    },
+    ambrisentan:function (c) {
+      if (c.dial) return RN("no", "Dialisi: la scheda tace" + st("amb","4.2") + ": " + ND + ".");
+      if (c.clcr === null) return RN("nd", "<b>Rene: —</b>. Nessun aggiustamento per la scheda; con ClCr &lt; 30 chiede cautela" + st("amb","4.2") + ": per dire quale delle due serve la clearance. Non decide la dose.");
+      if (c.clcr < 30) return RN("cau", "ClCr &lt; 30: «limitata esperienza»: cauti nell'iniziare e nel salire a 10 mg; nessuna dose diversa scritta" + st("amb","4.2") + ".");
+      return RN("ok", "ClCr ≥ 30: nessun aggiustamento" + st("amb","4.2") + ".");
+    },
+    bosentan:function () { return RN("ok", "Nessun aggiustamento a qualsiasi funzione renale, dialisi compresa" + st("bos","4.2") + "."); },
+    macitentan:function (c) {
+      if (c.dial) return RN("no", "Dialisi: «non è raccomandato»" + st("mac","4.2") + ": " + ND + ".");
+      if (c.clcr === null) return serveCl(c);
+      if (c.clcr < SOGLIE.grave) return RN("no", "Compromissione severa: la scheda non dà il numero, qui ClCr &lt; 30, lettura nostra. «Non esiste esperienza clinica»" + st("mac","4.2") + ": " + ND + ".");
+      return RN("ok", "ClCr ≥ 30: nessun aggiustamento; con il rene compromesso, pressione ed emoglobina" + st("mac","4.2, 4.4") + ".");
+    },
+    sildenafil:function (c) {
+      if (c.dial) return RN("no", "Dialisi: la scheda tace" + st("sil","4.2") + ": " + ND + ".");
+      return RN("ok", "Nessun aggiustamento della dose iniziale, anche con ClCr &lt; 30; se non tollerato 20 mg ×2/die" + st("sil","4.2") + ".");
+    },
+    sildenafil_ev:function (c) {
+      if (c.dial) return RN("no", "Dialisi: la scheda tace" + st("sil","4.2") + ": " + ND + ".");
+      return RN("ok", "Nessun aggiustamento della dose iniziale, anche con ClCr &lt; 30; se non tollerato 10 mg ×2/die" + st("sil","4.2") + ".");
+    },
+    tadalafil:function (c) {
+      if (c.dial) return RN("no", "Dialisi: «non è raccomandato»" + st("tad","4.2, 4.4") + ": " + ND + ".");
+      if (c.clcr === null) return serveCl(c);
+      if (c.clcr <= SOGLIE.grave) return RN("no", "Compromissione grave: «non è raccomandato». La scheda non dà il numero: lieve 51–80, moderata 31–50" + st("tad","4.2, 5.2") + "; qui ClCr ≤ 30, e 30 esatto si legge grave, lettura nostra: " + ND + ".");
+      if (c.clcr <= 80) return RN("rid", "ClCr 31–80, lieve-moderata: si inizia con 20 mg/die, poi 40 mg secondo efficacia e tolleranza" + st("tad","4.2, 5.2") + (c.clcr < 31 ? ". Fra 30 e 31 la scheda non ha una fascia: qui vale questa, lettura nostra" : "") + ".", "20 mg/die", "40 mg/die");
+      return RN("ok", "ClCr &gt; 80: nessun aggiustamento" + st("tad","4.2, 5.2") + ".");
+    },
+    riociguat:function (c) {
+      if (c.dial) return RN("no", "Dialisi: nessun dato, «non è raccomandato»" + st("rio","4.2, 4.4") + ": " + ND + ".");
+      if (c.clcr === null) return serveCl(c);
+      if (c.clcr < 30) return RN("no", "ClCr &lt; 30: dati limitati, «non è raccomandato»" + st("rio","4.2, 4.4") + ": " + ND + ".");
+      if (c.clcr < 80) return RN("cau", "ClCr 30–&lt;80: stessa dose; esposizione più alta, titolazione con particolare attenzione all'ipotensione" + st("rio","4.2, 4.4") + ".");
+      return RN("ok", "ClCr ≥ 80: nessuna regola renale" + st("rio","4.2") + ".");
+    },
+    selexipag:function (c, s) {
+      if (c.dial) return RN("no", "Dialisi: «non deve essere usato» in questa popolazione, nessuna esperienza" + st("sel","4.4") + ": " + ND + ".");
+      if (s.egfr === null || s.egfr === undefined) return RN("nd", "<b>Rene: —</b>. La scheda ragiona in eGFR, e qui non c'è; non cambia la dose di partenza a nessun valore" + st("sel","4.2") + ".");
+      if (!inScala(s.egfr, "egfr")) return RN("nd", "<b>eGFR fuori scala</b> (1–200 mL/min/1,73 m²).");
+      if (s.egfr < 30) return RN("cau", "eGFR &lt; 30: stessa dose di partenza, titolazione con cautela; esposizione 1,4–1,7 volte" + st("sel","4.2, 4.4, 5.2") + ".");
+      return RN("ok", "eGFR ≥ 30: nessun aggiustamento" + st("sel","4.2") + ".");
+    },
+    iloprost:function (c) {
+      if (c.dial) return RN("rid", "Dialisi: inizio 2,5 µg ogni 3–4 ore, al massimo 6 sedute al giorno; poi intervalli ridotti con cautela" + st("ilo","4.2") + ".", "2,5 µg ogni 3–4 ore, al massimo 6 sedute/die", "intervalli ridotti con cautela");
+      if (c.clcr === null) return serveCl(c);
+      if (c.clcr <= 30) return RN("no", "ClCr ≤ 30: «non sono stati studiati»" + st("ilo","4.2") + ": " + ND + ".");
+      return RN("ok", "ClCr &gt; 30, con Cockcroft-Gault come dice la scheda: nessun aggiustamento" + st("ilo","4.2") + ".");
+    },
+    epoprostenolo:function (c) {   // S2: la scheda tace; la dose resta, con attenzione: si titola sull'effetto e ha il rebound
+      if (c.dial) return RN("cau", "Dialisi: nell'IP la scheda tace" + st("epo","4.2") + ". La dose della Tab. 19 resta, con attenzione: si titola sull'effetto e ha il rebound (decisione del medico, 01/11/2026).");
+      if (c.clcr === null) return RN("nd", "<b>Rene: —</b>. La scheda tace sul rene a qualunque clearance: non decide la dose" + st("epo","4.2") + ".");
+      if (c.clcr < SOGLIE.irGenerica) return RN("cau", "ClCr &lt; 60: la scheda tace sul rene, nessuno schema" + st("epo","4.2") + ". La dose della Tab. 19 resta, con attenzione: si titola sull'effetto e ha il rebound (decisione del medico, 01/11/2026). Soglia della regola del progetto, lettura nostra.");
+      return RN("ok", "ClCr ≥ 60: la scheda tace sul rene, nessuna regola di dose" + st("epo","4.2") + ".");
+    },
+    treprostinil:function (c, s) {
+      if (!s.ind) return RN("manca", "<b>Rene: —</b>. Serve l'indicazione: le due schede dicono cose diverse.");
+      if (s.ind === "iap") return RN("ok", "PAH: nessun aggiustamento; non si elimina con la dialisi" + st("tre","4.2") + ".");
+      if (c.dial) return RN("cau", "CTEPH, dialisi: «non sono state formulate raccomandazioni», cautela" + st("trec","4.2") + ". La dose resta, con cautela: si titola sull'effetto e ha il rebound (decisione del medico, 01/11/2026).");
+      if (c.clcr === null) return serveCl(c);
+      if (c.clcr < SOGLIE.irGenerica) return RN("cau", "CTEPH, ClCr &lt; 60: «non sono state formulate raccomandazioni», cautela" + st("trec","4.2") + ". La dose resta, con cautela: si titola sull'effetto e ha il rebound (decisione del medico, 01/11/2026). Soglia della regola del progetto, lettura nostra.");
+      return RN("ok", "CTEPH, ClCr ≥ 60: la regola non scatta" + st("trec","4.2") + ".");
+    }
+  };
+  function reneBambino(id) {
+    var base = "Nel bambino il rene non si stima: Cockcroft-Gault è una formula dell'adulto." + DV + " ";
+    if (id === "tadalafil") return RN("nd", base + "Se il rene è compromesso, la scheda: lieve-moderata, sotto 40 kg 10 mg/die, aumentabile a 20; da 40 kg 20 mg/die, aumentabile a 40; grave e dialisi «non è raccomandato»" + st("tad","4.2") + ".");
+    if (id === "riociguat") return RN("nd", base + "La scheda non ha dati clinici nel bambino con compromissione renale" + st("rio","4.2") + ": con il rene compromesso " + ND + ".");
+    if (id === "bosentan") return RN("nd", base + "La scheda non chiede aggiustamenti a nessuna funzione renale" + st("bos","4.2") + ", senza distinguere il bambino.");
+    return RN("nd", base + "Con il rene compromesso decide lo specialista.");
+  }
+
+  /* Fegato. s.cp: "0", "A", "B", "C". Dove la scheda dice lieve, moderata, severa: A, B, C, lettura nostra. */
+  var LN = " La scheda non usa il Child-Pugh: lieve, moderata e severa come A, B e C sono una lettura nostra.";
+  var FEGATO = {
+    amlodipina:function (s) {
+      if (s.cp === "C") return RN("rid", "Compromissione grave: la farmacocinetica «non è stata studiata»; si inizia con la dose più bassa, seguita da un graduale aggiustamento" + st("aml","4.2") + ". La dose iniziale resta; il bersaglio alto della Tab. 19 no: decide il centro (decisione del medico, 01/11/2026).", "5 mg/die", "decide il centro");
+      return s.cp === "0" ? RN("ok", "Nessuna compromissione.") : RN("cau", "Compromissione lieve-moderata: nessuna raccomandazione di dose, si parte dalla dose più bassa, con cautela anche negli aumenti; grave: non studiata, aumenti graduali e attento monitoraggio" + st("aml","4.2") + ".");
+    },
+    felodipina:function (s) { return s.cp === "0" ? RN("ok", "Nessuna compromissione.") : RN("rid", "Concentrazioni più alte: «possono rispondere al trattamento con dosi più basse», senza un numero" + st("fel","4.2") + ". La dose iniziale resta; il bersaglio alto della Tab. 19 no: decide il centro (decisione del medico, 01/11/2026).", "5 mg/die", "decide il centro"); },
+    nifedipina:function (s) {
+      if (s.cp === "C") return RN("rid", "Compromissione grave: farmacocinetica «non è stata studiata», da usare con cautela, con controllo accurato della pressione e possibile riduzione del dosaggio" + st("nif","4.2, 4.4") + ". La dose iniziale resta; il bersaglio alto della Tab. 19 no: decide il centro (decisione del medico, 01/11/2026).", "10 mg ×3/die", "decide il centro");
+      return s.cp === "0" ? RN("ok", "Nessuna compromissione.") : RN("cau", "Controllo accurato della pressione e possibile riduzione della dose; nei casi gravi non studiata" + st("nif","4.2") + ".");
+    },
+    diltiazem:function (s) { return s.cp === "0" ? RN("ok", "Nessuna compromissione.") : RN("rid", "Stessa riduzione del rene: mezza compressa ×3 o 200 mg ×1, poi la dose minima efficace; funzione epatica periodica" + st("dil","4.2, 4.4") + ".", "30 mg ×3/die, oppure 200 mg ×1/die", "la dose minima efficace"); },
+    ambrisentan:function (s) {
+      var c;
+      if (s.cp === "C") c = RN("no", "Compromissione severa: non studiata, <b>controindicato</b>" + st("amb","4.2, 4.3") + "." + LN);
+      else if (s.cp === "0") c = RN("ok", "Nessuna compromissione.");
+      else c = RN("no", "Child-Pugh " + s.cp + ": per la compromissione lieve e moderata la scheda non ha uno schema, e la farmacocinetica non è stata studiata" + st("amb","4.2, 5.2") + ": " + ND + "." + LN);
+      var t = RN("ok", "");
+      if (s.mom === "pre") { if (s.tx > 3) t = RN("no", "AST o ALT di base &gt; 3 × LSN: <b>controindicato</b>" + st("amb","4.3") + "."); }
+      else if (s.mom === "corso") {
+        if (s.sint) t = RN("no", "Sintomi di danno epatico: <b>sospendere</b>; ripresa solo dopo la risoluzione, con l'epatologo" + st("amb","4.4") + ".");
+        else if (s.tx > 3) t = RN("cau", "In terapia: sospendere se l'aumento è sostenuto, inspiegato, clinicamente significativo; la scheda non dà un numero" + st("amb","4.4") + ".");
+      }
+      return peggio(c, t);
+    },
+    bosentan:function (s) {
+      var c;
+      if (s.cp === "B" || s.cp === "C") c = RN("no", "Child-Pugh " + s.cp + ": <b>controindicato</b>" + st("bos","4.3") + ".");
+      else c = RN("ok", s.cp === "A" ? "Child-Pugh A: nessun aggiustamento" + st("bos","4.2") + "." : "Nessuna compromissione.");
+      var t = RN("ok", "");
+      if (s.mom === "pre") { if (s.tx > 3) t = RN("no", "AST o ALT di base &gt; 3 × LSN: <b>controindicato</b>" + st("bos","4.3") + "."); }
+      else if (s.mom === "corso") {
+        if (s.sint) t = RN("no", "Sintomi di danno epatico: <b>sospendere e non riprendere mai</b>" + st("bos","4.4") + ".");
+        else if (s.tx > 8) t = RN("no", "AST o ALT &gt; 8 × LSN: <b>sospendere e non riprendere mai</b>" + st("bos","4.4") + ".");
+        else if (s.tx > 5) t = RN("no", "AST o ALT &gt; 5 e ≤ 8 × LSN: confermare con un secondo esame; se confermato <b>sospendere</b>, transaminasi almeno ogni 2 settimane; ripresa da considerare se tornano ai valori di prima, con l'epatologo, da 62,5 mg ×2, transaminasi entro 3 giorni e dopo 2 settimane" + st("bos","4.4") + ".");
+        else if (s.tx > 3) t = RN("cau", "AST o ALT &gt; 3 e ≤ 5 × LSN: confermare con un secondo esame; se confermato si decide caso per caso se continuare, possibilmente a dose ridotta, o sospendere; transaminasi almeno ogni 2 settimane" + st("bos","4.4") + ".");
+        else if (s.tx !== null && s.tx !== undefined) t = RN("ok", "AST o ALT ≤ 3 × LSN: nessuna delle tre soglie" + st("bos","4.4") + ".");
+      }
+      return peggio(c, t);
+    },
+    macitentan:function (s) {
+      var c;
+      if (s.cp === "C") c = RN("no", "Compromissione severa: <b>controindicato</b>" + st("mac","4.3") + "." + LN);
+      else if (s.cp === "B") c = RN("no", "Compromissione moderata: «non è raccomandato», nessuna esperienza clinica" + st("mac","4.2, 4.4") + ": " + ND + "." + LN);
+      else c = RN("ok", s.cp === "A" ? "Compromissione lieve: nessuna modifica della dose" + st("mac","4.2") + "." + LN : "Nessuna compromissione.");
+      var t = RN("ok", "");
+      if (s.mom === "pre") { if (s.tx > 3) t = RN("no", "AST o ALT di base &gt; 3 × LSN: <b>controindicato</b>" + st("mac","4.3") + "."); }
+      else if (s.mom === "corso") {
+        if (s.sint || s.bil) t = RN("no", (s.sint ? "Sintomi di danno epatico" : "Bilirubina &gt; 2 × LSN") + ": <b>sospendere</b>; ripresa senza sintomi e a enzimi normalizzati, con l'epatologo" + st("mac","4.4") + ".");
+        else if (s.tx > 3) t = RN("cau", "In terapia: sospendere se l'aumento è protratto, inspiegato, clinicamente rilevante; la scheda non dà un numero" + st("mac","4.4") + ".");
+      }
+      return peggio(c, t);
+    },
+    sildenafil:function (s, ped) {
+      if (s.cp === "C") return RN("no", "Child-Pugh C: non studiata, <b>controindicato</b>" + st("sil","4.2, 4.3") + ".");
+      if (ped && s.cp !== "0") return RN("cau", "Child-Pugh " + s.cp + ": nessun aggiustamento della dose iniziale. La riduzione se non tollerato, 20 mg ×2/die, è scritta sulla dose dell'adulto: fino a 20 kg sarebbe un aumento, e nel bambino dosi più alte sono vietate. Se non è tollerato, decide lo specialista" + st("sil","4.2, 4.4") + ".");
+      return RN("ok", s.cp === "0" ? "Nessuna compromissione." : "Child-Pugh " + s.cp + ": nessun aggiustamento della dose iniziale; se non tollerato 20 mg ×2/die" + st("sil","4.2") + ".");
+    },
+    sildenafil_ev:function (s) {
+      if (s.cp === "C") return RN("no", "Child-Pugh C: non studiata, <b>controindicato</b>" + st("sil","4.2, 4.3") + ".");
+      return RN("ok", s.cp === "0" ? "Nessuna compromissione." : "Child-Pugh " + s.cp + ": nessun aggiustamento della dose iniziale; se non tollerato 10 mg ×2/die" + st("sil","4.2") + ".");
+    },
+    tadalafil:function (s, ped) {
+      if (s.cp === "C") return RN("no", "Child-Pugh C: non inclusi negli studi, «non è raccomandata»" + st("tad","4.2") + ": " + ND + ".");
+      if (s.cp === "0") return RN("ok", "Nessuna compromissione.");
+      var d = ped && s.peso < 40 ? "10 mg/die" : "20 mg/die";
+      return RN("rid", "Child-Pugh " + s.cp + ": esperienza limitata: si può considerare un inizio di " + d + ", caso per caso. Nessun dato sopra 10 mg in questi pazienti" + st("tad","4.2, 5.2") + "." + (d === "10 mg/die" ? " Con la compressa da 20 mg, che si deglutisce intera, i 10 mg non si ottengono, e la sospensione non è in commercio in Italia" + pg(AIFA) + "." : ""), d, "la scheda non dice se salire: decide lo specialista");
+    },
+    riociguat:function (s, ped) {
+      var c;
+      if (s.cp === "C") c = RN("no", "Child-Pugh C: non studiato, <b>controindicato</b>" + st("rio","4.2, 4.3") + ".");
+      else if (ped && s.cp !== "0") c = RN("no", "Nel bambino nessun dato con compromissione epatica" + st("rio","4.2") + ": " + ND + ".");
+      else if (s.cp === "B") c = RN("cau", "Child-Pugh B: esposizione più alta (+51%), titolazione con particolare attenzione" + st("rio","4.2") + ".");
+      else c = RN("ok", s.cp === "A" ? "Child-Pugh A: nessuna indicazione specifica (+35%)" + st("rio","5.2") + "." : "Nessuna compromissione.");
+      var t = RN("ok", "");
+      if (s.mom === "pre" && (s.tx > 3 || s.bil)) t = RN("no", (s.tx > 3 ? "ALT o AST &gt; 3 × LSN" : "Bilirubina diretta &gt; 2 × LSN") + " prima di iniziare: nessuna esperienza clinica, «non è raccomandato»" + st("rio","4.4") + ": " + ND + ".");
+      return peggio(c, t);
+    },
+    selexipag:function (s) {
+      if (s.cp === "C") return RN("no", "Child-Pugh C: «non deve essere somministrato», nessuna esperienza" + st("sel","4.2") + ": " + ND + ".");
+      if (s.cp === "B") return RN("rid", "Child-Pugh B: inizio 100 µg ×2, +100 µg ×2 a intervalli settimanali, massimo 800 µg ×2; in alternativa una sola somministrazione al giorno, a metà dose giornaliera" + st("sel","4.2") + ".", "100 µg ×2/die", "fino a 800 µg ×2/die");
+      return RN("ok", s.cp === "A" ? "Child-Pugh A: nessun aggiustamento" + st("sel","4.2") + "." : "Nessuna compromissione.");
+    },
+    iloprost:function (s) {
+      if (s.cp === "0") return RN("ok", "Nessuna compromissione.");
+      return RN("rid", "Eliminazione ridotta; la scheda non nomina le classi: inizio 2,5 µg ogni 3–4 ore, al massimo 6 sedute al giorno; poi intervalli ridotti con attenzione; se si passa a 5 µg, di nuovo 3–4 ore all'inizio" + st("ilo","4.2") + ".", "2,5 µg ogni 3–4 ore, al massimo 6 sedute/die", "intervalli ridotti con attenzione");
+    },
+    epoprostenolo:function (s) {
+      if (s.cp === "0") return RN("ok", "Nessuna compromissione; la scheda tace sul fegato.");
+      return RN("cau", "Child-Pugh " + s.cp + ": la scheda tace sul fegato, nessuno schema" + st("epo","4.2") + ". La dose della Tab. 19 resta, con attenzione: si titola sull'effetto e ha il rebound (decisione del medico, 01/11/2026).");
+    },
+    treprostinil:function (s) {
+      if (s.cp === "C") return RN("no", "Child-Pugh C: <b>controindicato</b>, in entrambe le schede" + st("tre","4.3") + st("trec","4.3") + ".");
+      if (s.cp === "0") return RN("ok", "Nessuna compromissione.");
+      return RN("rid", "Child-Pugh " + s.cp + ": esposizione molto più alta: inizio 0,625 ng/kg/min, incrementi con cautela" + st("tre","4.2") + st("trec","4.2") + ".", "0,625 ng/kg/min", "incrementi con cautela, fino alla dose tollerata", 0.625);
+    }
+  };
+
+  /* Gravidanza: valori np, con, senza, gr, all. Rec. Table 6, p. 3663: ERA e riociguat III B; testo p. 3662. */
+  var P62 = "ESC/ERS 2022, p. 3662";
+  var SAFE = " " + DS + "la fonte considera sicuri, pur con poche prove, calcioantagonisti, PDE5i e prostanoidi inalatori, e.v. e s.c." + pg(P62) + "; dove la scheda è più stretta, qui vale la scheda. Lo decide il centro.";
+  function PV(gr, senza, all, con) { return { gr:gr, senza:senza, all:all, con:con }; }
+  var III = " Classe <b>III B</b>" + pg(RT6) + ".";
+  var PREG = {
+    amlodipina:PV(RN("cau", "Solo se non esiste un'alternativa più sicura e il disturbo comporta rischi importanti" + st("aml","4.6") + "." + SAFE), null, RN("cau", "Passa nel latte: decisione caso per caso" + st("aml","4.6") + ".")),
+    diltiazem:PV(RN("no", "<b>Controindicato in gravidanza</b>" + st("dil","4.3") + "." + SAFE), RN("no", "<b>Controindicato nelle donne in età fertile</b>" + st("dil","4.3") + "."), RN("no", "<b>Controindicato in allattamento</b>" + st("dil","4.3") + "."), RN("no", "<b>Controindicato nelle donne in età fertile</b>" + st("dil","4.3") + "; la gravidanza va esclusa, e la contraccezione efficace non basta a toglierlo dalla controindicazione: decide lo specialista.")),
+    felodipina:PV(RN("no", "<b>Controindicata in gravidanza</b>" + st("fel","4.3") + "." + SAFE), null, RN("no", "Allattamento «non raccomandato»" + st("fel","4.6") + ": " + ND + ".")),
+    nifedipina:PV(RN("no", "<b>Controindicata in gravidanza</b>, accertata o presunta; una formulazione a rilascio prolungato solo fino alla 20ª settimana" + st("nif","4.3") + "." + SAFE), null, RN("no", "<b>Controindicata in allattamento</b>" + st("nif","4.3") + ".")),
+    ambrisentan:PV(RN("no", "<b>Controindicato in gravidanza</b>" + st("amb","4.3") + "." + III), RN("no", "<b>Controindicato senza contraccezione efficace</b>" + st("amb","4.3") + "."), RN("no", "<b>Controindicato in allattamento</b>" + st("amb","4.3") + "."), RN("ok", "Test negativo prima di iniziare, e ogni mese" + st("amb","4.4") + ".")),
+    bosentan:PV(RN("no", "<b>Controindicato in gravidanza</b>" + st("bos","4.3") + "." + III), RN("no", "<b>Controindicato senza contraccezione affidabile</b>" + st("bos","4.3") + "."), RN("no", "Allattamento «non è raccomandato»" + st("bos","4.6") + ": " + ND + "."), RN("cau", "Contraccezione affidabile, <b>mai solo ormonale</b>; test negativo prima, e ogni mese" + st("bos","4.6") + ".")),
+    macitentan:PV(RN("no", "<b>Controindicato in gravidanza</b>" + st("mac","4.3") + "." + III), RN("no", "<b>Controindicato senza contraccezione efficace</b>" + st("mac","4.3") + "."), RN("no", "<b>Controindicato in allattamento</b>" + st("mac","4.3") + "."), RN("ok", "Test negativo prima, ogni mese, e niente gravidanza per un mese dopo lo stop" + st("mac","4.6") + ".")),
+    sildenafil:PV(RN("cau", "«A meno che non sia strettamente necessario»" + st("sil","4.6") + "." + SAFE), RN("no", "Età fertile senza contraccezione adeguata: non raccomandato" + st("sil","4.6") + ": " + ND + "."), RN("cau", "Allattamento: valutare caso per caso" + st("sil","4.6") + ".")),
+    tadalafil:PV(RN("cau", "Come misura precauzionale, è preferibile evitarlo" + st("tad","4.6") + "." + SAFE), null, RN("no", "Allattamento: «non deve essere usato»" + st("tad","4.6") + ": " + ND + ".")),
+    riociguat:PV(RN("no", "<b>Controindicato in gravidanza</b>" + st("rio","4.3") + "." + III), RN("no", "La scheda chiede una contraccezione efficace, anche nelle adolescenti" + st("rio","4.6") + ": senza, " + ND + "."), RN("no", "Allattamento: «non deve essere usato»" + st("rio","4.6") + ": " + ND + "."), RN("ok", "Test di gravidanza ogni mese" + st("rio","4.6") + ".")),
+    selexipag:PV(RN("no", "«Non raccomandato in gravidanza»" + st("sel","4.6") + "; la fonte, nel testo, lo sospende" + pg(P62) + ", ma la Rec. Table 6 non ha la sua riga: nessuna classe" + pg(RT6) + ". " + ND + "."), RN("no", "La scheda chiede una contraccezione efficace" + st("sel","4.6") + ": senza, " + ND + "."), RN("no", "Allattamento: «non deve essere assunto»" + st("sel","4.6") + ": " + ND + ".")),
+    iloprost:PV(RN("cau", "«Può essere considerato» dopo attenta valutazione" + st("ilo","4.6") + "."), RN("cau", "La scheda chiede una contraccezione efficace" + st("ilo","4.6") + "."), RN("cau", "Allattamento: «preferibile evitare»" + st("ilo","4.6") + ".")),
+    epoprostenolo:PV(RN("cau", "Dati limitati; non avendo alternative «può essere utilizzato» in chi decide di continuare la gravidanza" + st("epo","4.6") + "."), null, RN("cau", "L'allattamento va interrotto" + st("epo","4.6") + ".")),
+    treprostinil:PV(RN("cau", "Solo se il beneficio per la madre giustifica il rischio per il feto" + st("tre","4.6") + "."), RN("cau", "Contraccezione raccomandata" + st("tre","4.6") + "."), RN("cau", "L'allattamento va interrotto" + st("tre","4.6") + "."))
+  };
+  PREG.sildenafil_ev = PREG.sildenafil;
+
+  /* Anziani: dalle schede, § 4.2. Dove la scheda non dà l'età, da 65 anni: lettura nostra, dichiarata. */
+  var LN65 = " La scheda non dice da che età: qui da 65 anni, lettura nostra.";
+  var ANZ = {
+    amlodipina:{ da:65, t:"<b>Anziano:</b> dosi abituali, ma l'aumento va considerato con cautela" + st("aml","4.2") + "." + LN65 },
+    diltiazem:{ da:65, t:"<b>Anziano:</b> la scheda chiede lo stesso inizio ridotto del rene e del fegato, mezza compressa ×3 o 200 mg ×1, poi la dose minima efficace" + st("dil","4.2") + "." + LN65, ini:"30 mg ×3/die, oppure 200 mg ×1/die", ber:"la dose minima efficace" },
+    felodipina:{ da:65, t:"<b>Anziano:</b> da considerare un inizio con la dose minima disponibile" + st("fel","4.2") + "." + LN65 },
+    nifedipina:{ da:65, t:"<b>Anziano:</b> possono servire dosi minori" + st("nif","4.2") + "." + LN65 },
+    riociguat:{ da:65, t:"<b>65 anni o più:</b> rischio di ipotensione più alto, titolazione con particolare attenzione" + st("rio","4.2") + "." },
+    selexipag:{ da:75.01, t:"<b>Oltre 75 anni:</b> esperienza clinica limitata, con cautela" + st("sel","4.2") + "." },
+    epoprostenolo:{ da:65, t:"<b>Anziano:</b> la dose si cerca con attenzione, per la maggiore frequenza di insufficienza epatica, renale o cardiaca" + st("epo","4.2") + "." + LN65 },
+    treprostinil:{ da:65, t:"<b>Anziano:</b> la dose si sceglie con cautela, per la maggiore frequenza di ridotta funzionalità epatica, renale o cardiaca" + st("tre","4.2") + st("trec","4.2") + "." + LN65 }
+  };
+
+  /* Il bambino. Sotto l'età minima della scheda, o dove dice «non stabilito»: nessuna dose. Tetti della scheda; le
+     posologie suggerite della Tab. 22 non diventano una dose. Dalla scheda, § 4.2. */
+  function BN(t) { return { k:"no", t:"<b>Nessuna dose, decide lo specialista.</b> " + t }; }
+  function BM(m) { return { k:"manca", m:m }; }
+  function BD(ini, ber, t) { return { k:"ok", ini:ini, ber:ber, t:t }; }
+  var BAMBINO = {
+    amlodipina:function () { return BN("La scheda ha il bambino solo per l'ipertensione arteriosa, fra 6 e 17 anni fino a 5 mg/die, non per l'IP; sotto 6 anni nessun dato" + st("aml","4.2") + ". La Tab. 22 della fonte non elenca i calcioantagonisti" + pg("p. 3684") + "."); },
+    diltiazem:function () { return BN("«Non è raccomandato nei bambini», generalmente controindicato" + st("dil","4.2, 4.3") + "."); },
+    felodipina:function () { return BN("Esperienza limitata; lo studio fra 6 e 16 anni non ha dimostrato efficacia" + st("fel","4.2, 5.1") + "."); },
+    nifedipina:function () { return BN("Sotto 18 anni non stabilita, nessuna forma pediatrica" + st("nif","4.2, 5.1") + "."); },
+    ambrisentan:function (s) {
+      if (s.eta < 8) return BN("Sotto 8 anni sicurezza ed efficacia «non sono state stabilite»" + st("amb","4.2") + ".");
+      if (!inScala(s.peso, "peso")) return BM("peso del bambino");
+      if (s.peso < 20) return BN("Sotto 20 kg la scheda non dà una dose" + st("amb","4.2") + ".");
+      var t = " La Tab. 22 della fonte («&gt; 8 anni») non ha le fasce di peso: vale la scheda" + pg("p. 3684") + ". Compresse intere, nessuna formulazione pediatrica.";
+      var cs = s.comed && s.comed.ciclosporina;
+      if (s.peso < 35) return cs ? BD("2,5 mg/die", "2,5 mg/die, il massimo con la ciclosporina", "Fra 20 e &lt; 50 kg, con la ciclosporina, al massimo 2,5 mg" + st("amb","4.2") + "." + t) : BD("2,5 mg/die", "5 mg/die", "20–&lt;35 kg, una volta al giorno" + st("amb","4.2") + "." + t);
+      if (s.peso < 50) return cs ? BD("2,5 mg/die", "2,5 mg/die, il massimo con la ciclosporina", "Fra 20 e &lt; 50 kg, con la ciclosporina, al massimo 2,5 mg" + st("amb","4.2") + "." + t) : BD("5 mg/die", "7,5 mg/die", "35–&lt;50 kg, una volta al giorno" + st("amb","4.2") + "." + t);
+      return cs ? BD("5 mg/die", "5 mg/die, il massimo con la ciclosporina", "Da 50 kg, con la ciclosporina, al massimo 5 mg" + st("amb","4.2") + "." + t) : BD("5 mg/die", "10 mg/die", "Da 50 kg, una volta al giorno" + st("amb","4.2") + "." + t);
+    },
+    bosentan:function (s) {
+      if (s.eta < 1) return BN("La dose della scheda vale da 1 anno; nella PPHN «non si possono fare raccomandazioni»" + st("bos","4.2") + ".");
+      if (!inScala(s.peso, "peso")) return BM("peso del bambino");
+      var mg = 2 * s.peso, tetto = mg > 125, d = tetto ? 125 : mg;
+      var q = nf(d) + " mg ×2/die";
+      return BD(q, q, "2 mg/kg al mattino e alla sera, dose iniziale e di mantenimento: 2 × " + nf(s.peso) + " kg = " + nf(mg) + " mg" + st("bos","4.2") + (tetto ? ". <b>Fermata a 125 mg ×2, il mantenimento dell'adulto:</b> la scheda non scrive un tetto in mg, la Tab. 22 della fonte dice 250 mg/die" + pg("p. 3684") : ". Oltre 2 mg/kg nessun guadagno; la scheda non scrive un tetto in mg, la Tab. 22 della fonte dice 250 mg/die" + pg("p. 3684")) + ". Compresse dispersibili da 32 mg, divisibili in quarti da 8 mg, in commercio in Italia" + pg(AIFA) + ".");
+    },
+    macitentan:function (s) {
+      if (s.eta < 2) return BN("Sotto 2 anni dose ed efficacia «non sono state stabilite»" + st("mac","4.2") + ".");
+      if (!inScala(s.peso, "peso")) return BM("peso del bambino");
+      if (s.peso < 10) return BN("Sotto 10 kg la scheda non dà una dose" + st("mac","4.2") + ".");
+      var it = " <b>Le dispersibili da 2,5 mg non sono mai state messe in commercio in Italia</b>" + pg(AIFA) + ": questa dose qui non ha un prodotto.";
+      if (s.peso < 20) return BD("5 mg/die", "5 mg/die", "10–&lt;20 kg, una volta al giorno" + st("mac","4.2") + "." + it);
+      if (s.peso < 40) return BD("7,5 mg/die", "7,5 mg/die", "20–&lt;40 kg, una volta al giorno" + st("mac","4.2") + "." + it);
+      return BD("10 mg/die", "10 mg/die", "Da 40 kg una volta al giorno, anche con la compressa da 10 mg, che in Italia c'è" + st("mac","4.1, 4.2") + ". Nella Tab. 22 della fonte (2022) l'approvazione pediatrica non c'era" + pg("p. 3684") + ".");
+    },
+    sildenafil:function (s) {
+      if (s.eta < 1) return BN("Sotto 1 anno non stabilita; nella PPHN «non deve essere usato»" + st("sil","4.2, 4.4") + ".");
+      if (!inScala(s.peso, "peso")) return BM("peso del bambino");
+      var t = " Mai dosi più alte: più mortalità nello studio" + st("sil","4.2, 4.4") + ". Per bocca, anche in sospensione da 10 mg/mL, in commercio in Italia" + pg(AIFA) + ". La Tab. 22 della fonte taglia a &lt; 20 / ≥ 20 kg: a 20 kg esatti vale la scheda" + pg("p. 3684") + ".";
+      if (s.peso <= 20) return BD("10 mg ×3/die", "10 mg ×3/die", "Fino a 20 kg compresi" + st("sil","4.2") + "." + t);
+      return BD("20 mg ×3/die", "20 mg ×3/die", "Oltre 20 kg" + st("sil","4.2") + "." + t);
+    },
+    sildenafil_ev:function () { return BN("E.v. sotto i 18 anni «non è raccomandato»: dati insufficienti" + st("sil","4.2") + ". Per bocca: la voce sildenafil."); },
+    tadalafil:function (s) {
+      if (s.eta < 2) return BN("Sotto 2 anni non stabilita, «non è raccomandato»" + st("tad","4.2") + ".");
+      if (!inScala(s.peso, "peso")) return BM("peso del bambino");
+      var t = " Dose fissa, non per kg: in un bambino piccolo supera 1 mg/kg. La Tab. 22 della fonte (2022: nessuna approvazione) è superata dalla scheda" + pg("p. 3684") + ".";
+      if (s.peso < 40) return BD("20 mg/die", "20 mg/die", "Sotto 40 kg, una volta al giorno" + st("tad","4.2") + "." + t + " La sospensione pediatrica non è in commercio in Italia" + pg(AIFA) + ": in Italia la compressa da 20 mg, che si deglutisce intera.");
+      return BD("40 mg/die", "40 mg/die", "Da 40 kg, una volta al giorno" + st("tad","4.2") + "." + t);
+    },
+    riociguat:function (s) {
+      if (s.eta < 6) return BN("Sotto 6 anni «non sono state stabilite», per la crescita ossea nei dati preclinici" + st("rio","4.2") + ". Nella CTEPH del bambino: nessuna dose.");
+      if (!inScala(s.peso, "peso")) return BM("peso del bambino");
+      if (s.peso < 12) return BN("Sotto 12 kg la scheda non dà una dose" + st("rio","4.2") + ".");
+      var c = s.comed || {};
+      if (!c.bosentan && !c.ambrisentan && !c.macitentan) return BN("Nel bambino, solo insieme a un antagonista dell'endotelina" + st("rio","4.1") + ": spunta quello che prende, al passo 5. Nella CTEPH del bambino: nessuna dose.");
+      var pas = " PAS minima " + (s.eta < 12 ? "90" : "95") + " mmHg per iniziare e per salire; nella CTEPH del bambino nessuna dose.";
+      if (s.peso >= 50) return BD("1 mg ×3/die", "2,5 mg ×3/die, massimo 7,5 mg/die", "Da 50 kg le compresse, come l'adulto" + st("rio","4.2") + "." + pas);
+      for (var i = 0; i < GRAN.length; i++) if (s.peso >= GRAN[i][0] && s.peso < GRAN[i][1]) {
+        var g = GRAN[i];
+        return BD(nf(g[2]) + " mL ×3/die di granulato (≡ 1 mg)", nf(g[5]) + " mL ×3/die (≡ 2,5 mg, cioè " + nf(g[5] * 0.15, 2) + " mg)", g[0] + "–&lt;" + g[1] + " kg: sospensione da 0,15 mg/mL, gradini ogni 2 settimane: " + nf(g[2]) + " → " + nf(g[3]) + " → " + nf(g[4]) + " → " + nf(g[5]) + " mL" + st("rio","4.2") + "." + pas + " <b>Il granulato non è mai stato messo in commercio in Italia</b>" + pg(AIFA) + ": questa dose qui non ha un prodotto.");
+      }
+      return BN("Peso fuori dalla tabella della scheda.");
+    },
+    selexipag:function () { return BN("Fra 2 e &lt; 18 anni non stabilita, «non è raccomandata»; sotto 2 anni non studiata" + st("sel","4.2") + ". Negli USA l'etichetta FDA lo approva dai 2 anni dal 05/2026: fuori dalla gerarchia delle fonti del progetto."); },
+    iloprost:function () { return BN("Sotto 18 anni non stabilita; nessuno studio nel bambino con IP" + st("ilo","4.2, 5.1") + "."); },
+    epoprostenolo:function () { return BN("Sotto 18 anni «non è stata ancora stabilita»" + st("epo","4.2") + "."); },
+    treprostinil:function () { return BN("«Solo pochi dati», e non è dimostrato che si possano estrapolare" + st("tre","4.2") + "; nessuna indicazione nel bambino per la CTEPH" + st("trec","4.2") + "."); }
+  };
+
+  /* La valutazione: niente pagina qui dentro, solo lo stato in ingresso. */
+  function valuta(id, s) {
+    var F = FARMACI[id], c = clearance(s);
+    var r = { id:id, F:F, esito:"vuoto", manca:[], stop:[], ini:null, ber:null, inf:null, rene:null, feg:null, preg:null, inter:[], ped:false, cl:c, bamb:null, fra:null, avvisi:[] };
+    if (!F) return r;
+    if (F.tipo === "rim") { r.esito = "rim"; return r; }
+    if (F.tipo === "nit") { r.esito = "nit"; r.ini = F.ini; r.ber = F.ber; return r; }
+    if (F.tipo === "nod") { r.esito = "no"; r.stop.push(F.perche); return r; }
+
+    /* età: decide adulto o bambino, dunque la dose */
+    if (s.eta === null || s.eta === undefined) r.manca.push("età");
+    else if (!inScala(s.eta, "eta")) r.manca.push("età nella scala (0–110 anni)");
+    r.ped = inScala(s.eta, "eta") && s.eta < SOGLIE.adulto;
+
+    if (F.tipo === "test") {
+      if (r.ped) { r.esito = "no"; r.stop.push("<b>Nessuna dose, decide lo specialista.</b> Il test nel bambino è raccomandato, I C" + pg("ESC/ERS 2022, Rec. Table 21, p. 3685") + ", ma nessuna scheda lo regge come indicazione" + (id === "no_test" ? st("no","4.1, 4.2") : "") + "."); return r; }
+      r.esito = r.manca.length ? "manca" : "test"; r.ini = F.ini; r.ber = F.ber; return r;
+    }
+
+    /* bambino */
+    if (r.ped) {
+      var b = BAMBINO[id](s);
+      r.bamb = b;
+      if (b.k === "no") { r.stop.push(b.t); r.esito = "no"; return r; }
+      if (s.dialisi) { r.stop.push("<b>Nessuna dose, decide lo specialista.</b> Bambino in dialisi: nessuna scheda ha uno schema."); r.esito = "no"; return r; }
+      if (b.k === "manca") r.manca.push(b.m);
+      else { r.ini = b.ini; r.ber = b.ber; }
+    } else if (inScala(s.eta, "eta")) { r.ini = F.ini; r.ber = F.ber; }
+
+    /* calcioantagonisti: solo nei responder (Rec. Table 7, p. 3664) */
+    if (F.ccb) {
+      if (!s.resp) r.manca.push("risposta al test di vasoreattività");
+      else if (s.resp === "no") r.stop.push("<b>Niente calcioantagonista per la PAH</b> a chi non ha fatto il test o non risponde, <b>III C</b>, per ipotensione grave, sincope e scompenso destro; restano le dosi standard per altre indicazioni, come il Raynaud" + pg(RT7) + ". Terapia: Tool Terapia PAH.");
+    }
+    if (F.ind && !s.ind) r.manca.push("indicazione del treprostinil");
+
+    /* sesso */
+    if (!s.sesso) r.manca.push("sesso");
+
+    /* rene */
+    r.rene = r.ped ? reneBambino(id) : RENE[id](c, s);
+    if (!r.ped && !(F.ind && s.ind !== "cteph")) r.fra = sogliaFra(c, F.sg);
+    if (r.rene.k === "no") r.stop.push(r.rene.t);
+    if (r.rene.k === "manca" && !(F.ind && !s.ind)) { for (var q = 0; q < c.manca.length; q++) if (r.manca.indexOf(c.manca[q]) < 0) r.manca.push(c.manca[q]); }
+    if (r.rene.k === "rid") { r.ini = r.rene.ini; r.ber = r.rene.ber; }
+
+    /* fegato */
+    if (!s.cp) { r.feg = RN("manca", "<b>Fegato: —</b>. Serve la classe di Child-Pugh, o «nessuna»."); r.manca.push("compromissione epatica"); }
+    else {
+      if (F.tr) {
+        if (!s.mom) r.manca.push("il momento: prima di iniziare o già in terapia");
+        var serveTx = s.mom === "pre" || (s.mom === "corso" && !F.trPre);
+        if (serveTx) {
+          if (s.tx === null || s.tx === undefined) r.manca.push("AST o ALT in multipli del limite superiore");
+          else if (!inScala(s.tx, "tx")) r.manca.push("AST o ALT nella scala (0–200 × LSN)");
+        }
+      }
+      var sf = s;
+      if (s.tx !== null && s.tx !== undefined && !inScala(s.tx, "tx")) { sf = {}; for (var kf in s) if (s.hasOwnProperty(kf)) sf[kf] = s[kf]; sf.tx = null; }  // un valore fuori scala non decide niente
+      r.feg = FEGATO[id](sf, r.ped);
+      if (r.feg.k === "no") r.stop.push(r.feg.t);
+      if (r.feg.k === "rid") { r.ini = r.feg.ini; r.ber = r.feg.ber; if (r.feg.inf) r.inf = r.feg.inf; }
+    }
+
+    /* gravidanza */
+    if (s.sesso === "f") {
+      if (!s.preg) r.manca.push("gravidanza e allattamento");
+      else if (s.preg !== "np" && PREG[id]) {
+        r.preg = PREG[id][s.preg] || RN("ok", "");
+        if (r.preg.k === "no") r.stop.push(r.preg.t);
+      }
+    }
+
+    /* interazioni */
+    var L = INTER[id] || [], i, j, cm = s.comed || {};
+    for (i = 0; i < L.length; i++) {
+      var acceso = false;
+      for (j = 0; j < L[i].c.length; j++) if (cm[L[i].c[j]]) acceso = true;
+      if (!acceso) continue;
+      var x = L[i];
+      if (r.ped && x.tPed) x = { c:x.c, k:x.k, t:x.tPed, ini:x.ini, ber:x.ber, pedOk:x.pedOk };
+      r.inter.push(x);
+      if (x.k === "stop") r.stop.push(x.t);
+      else if (x.k === "mod") {
+        if (r.ped && !x.pedOk) r.stop.push(x.pedNo || (x.t + " <b>Nel bambino questo schema non c'è, e gli studi d'interazione sono solo negli adulti: " + ND + ".</b>"));
+        else if (!r.ped) { r.ini = x.ini; r.ber = x.ber; }
+      }
+    }
+    if (id === "treprostinil" && cm.prostanoide) {
+      if (s.ind === "cteph") r.stop.push("<b>Altri prostanoidi:</b> nella CTEPH la co-somministrazione è <b>controindicata</b>" + st("trec","4.3") + ".");
+      else r.inter.push(I(["prostanoide"], "warn", "<b>Altri prostanoidi:</b> per la PAH la scheda non lo controindica; per la CTEPH sì" + st("trec","4.3") + "."));
+    }
+    if (id === "selexipag" && s.cp === "B" && (cm.clopidogrel || cm.deferasirox || cm.teriflunomide)) r.stop.push("<b>Child-Pugh B e inibitore moderato del CYP2C8 insieme:</b> la scheda dà i due schemi separati e non la loro somma" + st("sel","4.2") + ": " + ND + ".");
+    if (id === "tadalafil" && !r.ped && s.cp !== "0" && s.cp && r.rene && r.rene.k === "rid") r.avvisi.push("Rene e fegato chiedono lo stesso inizio, 20 mg/die: quanto salire lo decide lo specialista, per il fegato.");
+
+    /* anziani */
+    var A = ANZ[id], anz = !r.ped && !!A && inScala(s.eta, "eta") && s.eta >= A.da;
+    if (anz) {
+      r.avvisi.push(A.t);
+      if (A.ini) { r.ini = A.ini; r.ber = A.ber; }
+    }
+
+    /* l'esito: il più grave vince; un rene non valutato non vale «normale» */
+    var cau = F.ccb && s.resp === "si" || (r.rene && (r.rene.k === "cau" || r.rene.k === "nd")) || (r.feg && r.feg.k === "cau") || (r.preg && r.preg.k === "cau") || r.fra !== null || anz;
+    var rid = (r.rene && r.rene.k === "rid") || (r.feg && r.feg.k === "rid") || (anz && !!A.ini);
+    for (i = 0; i < r.inter.length; i++) { if (r.inter[i].k === "warn") cau = true; if (r.inter[i].k === "mod") rid = true; }
+    if (r.stop.length) r.esito = "no";
+    else if (r.manca.length) r.esito = "manca";
+    else if (rid) r.esito = "rid";
+    else if (cau) r.esito = "cau";
+    else r.esito = "ok";
+    return r;
+  }
+
+  function infus(id, s, r) {   // ng/min per il peso: solo per le infusioni
+    var F = FARMACI[id];
+    if (!F || !F.inf || r.ped || !inScala(s.peso, "peso") || r.esito === "no") return "";
+    var base = r.inf || F.inf, p = s.peso, nota = "";
+    if (id === "treprostinil") {
+      var i = pesoIdeale(s);
+      if (i === null) nota = " Se il peso supera di oltre il 30% l'ideale, la scheda vuole il peso ideale: per dirlo serve l'altezza.";
+      else if (s.peso > SOGLIE.obesoTre * i) { p = i; nota = " <b>Peso oltre il 30% sopra l'ideale: sul peso ideale, " + nf(i) + " kg</b>" + st("tre","4.2") + "; la scheda non dà la formula, qui Devine, lettura nostra."; }
+    }
+    return "A " + nf(p) + " kg: " + nf(base, 3) + " ng/kg/min = <b>" + nf(base * p, 1) + " ng/min</b>." + nota;
+  }
+
+  function incoerenze(id, s, r) {
+    var F = FARMACI[id], x = [];
+    if (!F) return x;
+    if (F.ccb) {
+      x.push("<b>Oltre il tetto della scheda.</b> Decisione del medico: resta la dose della Tab. 19, con la nota del tetto. Nessuno dei quattro ha l'indicazione nell'IP" + pg(T19) + ".");
+      x.push("<b>Quando si ricontrolla.</b> 3–4 mesi nella Rec. Table 7" + pg(RT7) + ", 3–6 mesi nel testo e nella Fig. 8" + pg("ESC/ERS 2022, pp. 3663, 3665") + ". Qui la classe è quella della riga: 3–4.");
+      x.push("<b>Quando si tiene.</b> mPAP &lt; 30 e PVR &lt; 4 nella Rec. Table 7, ≤ 30 e ≤ 4 nella nota della Fig. 8" + pg("ESC/ERS 2022, pp. 3664, 3665") + ": lo legge il Tool Cateterismo IP.");
+    }
+    if (id === "ambrisentan" || id === "bosentan" || id === "macitentan" || id === "selexipag" || id === "sildenafil" || id === "sildenafil_ev" || id === "tadalafil" || id === "riociguat")
+      x.push("<b>La Tab. S4</b> è adattata da un consenso britannico e irlandese del 2008" + pg(S4B) + ", e le schede di oggi a volte dicono altro. Dove divergono si tiene la lettura più prudente, con un DA SAPERE accanto alla riga (decisione del medico, 01/11/2026).");
+    if (id === "ambrisentan") x.push("<b>Meccanismo.</b> Per ciclosporina, ketoconazolo e contraccettivi la Tab. S4 scrive «induzione del CYP3A4», senza spiegarlo" + pg(S4A) + ".");
+    if (id === "sildenafil" || id === "sildenafil_ev") {
+      x.push("<b>Dosi più alte.</b> La nota c della Tab. 19 dice che a volte in pratica lo sono" + pg(T19) + "; la scheda non le ha, e nel bambino le vieta" + st("sil","4.2, 4.4") + ".");
+      x.push("<b>Inibitori della proteasi.</b> Nell'HIV il testo dice di introdurre i PDE5i a dose bassa" + pg("ESC/ERS 2022, p. 3676") + ", la Tab. S4 «non raccomandata»" + pg(S4B) + ": qui la più prudente.");
+    }
+    if (id === "tadalafil") {
+      x.push("<b>L'inizio.</b> La Tab. 19 dà 20 o 40 mg/die" + pg(T19) + "; la scheda 40 mg subito, e 20 mg solo con rene lieve-moderato o Child-Pugh A–B" + st("tad","4.2") + ". Il bersaglio è lo stesso.");
+      x.push("<b>ClCr 30 esatto.</b> La scheda ha lieve 51–80, moderata 31–50 e una «grave» senza numero" + st("tad","4.2, 5.2") + ". 30 esatto non sta in nessuna fascia: qui si legge grave, lettura nostra.");
+    }
+    if (id === "tadalafil" || id === "riociguat" || id === "sildenafil") x.push("<b>Con i nitrati, ESC 2024 sulla coronarica cronica.</b> Dà anche la finestra: non entro 24 ore da sildenafil o vardenafil, non entro 48 ore da tadalafil, III B nel suo sistema. La ESC/ERS 2022 vieta l'associazione senza finestre, e aggiunge il riociguat" + pg("ESC/ERS 2022, p. 3667") + ". Nessuna classe cambia.");
+    if (id === "riociguat") x.push("<b>Nota d.</b> Con rischio di ipotensione la Tab. 19 ammette 0,5 mg ×3/die" + pg(T19) + "; la scheda dà 0,5 mg ×3 solo con gli inibitori potenti multivia, e negli altri chiede di titolare con attenzione" + st("rio","4.2") + ".");
+    if (id === "selexipag") {
+      x.push("<b>La frequenza.</b> Descrivendo TRITON il testo scrive fino a 1600 µg una volta al giorno" + pg("ESC/ERS 2022, p. 3668") + "; la Tab. 19, p. 3669 e la scheda dicono due volte: la dose resta quella della Tab. 19.");
+      x.push("<b>In gravidanza.</b> Il testo lo sospende insieme a ERA e riociguat" + pg(P62) + "; la Rec. Table 6 mette in III B solo gli altri due" + pg(RT6) + ": nessuna classe.");
+    }
+    if (id === "iloprost") x.push("<b>Indicazione.</b> La scheda ha la sola IP idiopatica in classe NYHA III" + st("ilo","4.1") + "; la fonte lo usa più largo, Rec. Table 10 IIb B con il bosentan" + pg(RT10) + ", Tab. S3 I B" + pg(S3) + ".");
+    if (id === "epoprostenolo") x.push("<b>Perché qui la dose resta dove la scheda tace.</b> In dialisi ambrisentan, sildenafil e diltiazem, e con Child-Pugh A o B l'ambrisentan, dove la scheda tace non hanno una dose: decide lo specialista. L'epoprostenolo sì: si titola sull'effetto e ha il rebound, anche fatale. Non è una svista: decisione del medico, 01/11/2026.");
+    if (id === "epoprostenolo") x.push("<b>L'inizio.</b> I 2 ng/kg/min della Tab. 19" + pg(T19) + " coincidono con l'inizio della fase acuta della scheda, non con il suo avvio cronico, che parte 4 ng/kg/min sotto la massima tollerata" + st("epo","4.2") + ". Indicazione più stretta della fonte" + st("epo","4.1") + ".");
+    if (id === "treprostinil") {
+      x.push("<b>Due schede.</b> Sul rene, per la PAH «nessun aggiustamento»" + st("tre","4.2") + ", per la CTEPH «nessuna raccomandazione», cautela" + st("trec","4.2") + ": ciascuna nella sua indicazione (decisione del medico, 01/11/2026).");
+      x.push("<b>Via e.v.</b> Per la fonte un'alternativa, Tab. S3 IIa C" + pg(S3) + "; per la scheda riservata a chi non tollera più la s.c." + st("tre","4.2") + ".");
+    }
+    if (id === "tadalafil" || id === "iloprost" || id === "treprostinil") x.push("<b>PVOD.</b> La Rec. Table 20 considera i farmaci della PAH, IIb C" + pg("ESC/ERS 2022, p. 3681") + "; la scheda " + (id === "tadalafil" ? "non lo raccomanda" : "lo controindica") + ". Qui la dose non si dà per la PVOD: decide il centro.");
+    if ((id === "bosentan" || id === "macitentan" || id === "sildenafil" || id === "tadalafil") && s.cp && s.cp !== "0") x.push("<b>Ipertensione portale.</b> La fonte parla di tutti i farmaci della PAH" + pg("ESC/ERS 2022, p. 3677") + "; le soglie di Child-Pugh della scheda restano.");
+    if (s.sesso === "f" && (id === "ambrisentan" || id === "bosentan" || id === "macitentan" || id === "riociguat" || id === "selexipag")) x.push("<b>ESC 2025, gravidanza.</b> ERA, riociguat e selexipag nella stessa riga, III C nel suo sistema; la minore efficacia dei contraccettivi ormonali va discussa con tutte le donne in ERA, non solo in bosentan. La classe della ESC/ERS 2022 resta.");
+    if (s.sesso === "f" && id === "sildenafil") x.push("<b>ESC 2025, gravidanza.</b> Il sildenafil è il farmaco usato nella grande maggioranza, con un prostanoide secondo la gravità. La classe della ESC/ERS 2022 resta.");
+    if (F.tipo === "test") {
+      x.push("<b>Quale farmaco.</b> La Fig. 8 raccomanda ossido nitrico e iloprost inalatori, e l'epoprostenolo e.v. se mancano" + pg("ESC/ERS 2022, p. 3665") + "; la Rec. Table 1 li raccomanda tutti e tre, senza gerarchia, I C" + pg(RT1) + ".");
+      x.push("<b>Nessuna scheda</b> ha il test di vasoreattività fra le indicazioni: la dose è quella della Tab. 12" + pg(T12) + ".");
+    }
+    return x;
+  }
+
+  /* ═══ STATO E PIANO ═════════════════════════════════════════════════════ */
+  function el(id) { return document.getElementById(id); }
+  function ckv(id) { var x = el(id); return !!(x && x.checked); }
+  function num(id) { var v = el(id).value; if (v === "") return null; var n = parseFloat(String(v).replace(",", ".")); return isNaN(n) ? null : n; }
+  function radio(n) { var x = document.querySelector('input[name="' + n + '"]:checked'); return x ? x.value : ""; }
+  function nota(g, t) { return '<div class="nota ' + (g || "") + '">' + t + "</div>"; }
+  function chip(k, t) { return '<span class="cat ' + k + '">' + t + "</span>"; }
+  function rigaD(et, t) { return '<div class="rigaD"><span class="et">' + et + "</span>" + t + "</div>"; }
+  function corPill(c, l) { var k = { "I":"c1", "IIa":"c2a", "IIb":"c2b", "III":"c3" }[c]; return '<span class="cor ' + k + '">' + c + '</span><span class="cor cx">' + l + "</span>"; }
+  function mostra(id, si, base) { el(id).className = (base || "") + (si ? "" : " hide"); }
+
+  function S() {
+    var cm = {}, k;
+    for (k in COMED) if (COMED.hasOwnProperty(k)) cm[k] = ckv("cm_" + k);
+    return { far:el("far").value, resp:radio("resp"), ind:radio("ind"), eta:num("eta"), sesso:radio("sesso"), peso:num("peso"), alt:num("alt"),
+             creat:num("creat"), ucr:radio("ucr") || "mg", dialisi:ckv("dialisi"), egfr:num("egfr"), cp:radio("cp"), mom:radio("mom"), tx:num("tx"),
+             bil:ckv("bil"), sint:ckv("sint"), preg:el("preg").value, comed:cm };
+  }
+
+  /* «Nessuna dose» non è «sospendi»: dove la scheda scrive del rebound lo si dice accanto. */
+  var REBOUND = {
+    epoprostenolo:"<b>Se è già in infusione, questa riga non vuol dire sospendere.</b> La scheda: mai interruzioni brusche o riduzioni cospicue, il rebound può essere fatale; la velocità si cambia solo sotto controllo medico" + st("epo","4.2") + ".",
+    treprostinil:"<b>Se è già in infusione, questa riga non vuol dire sospendere.</b> La scheda: l'interruzione brusca o una riduzione importante e improvvisa può dare un rebound; è da evitare, e si riprende il prima possibile" + st("tre","4.2, 4.4") + st("trec","4.2") + ".",
+    iloprost:"<b>Se è già in terapia, questa riga non vuol dire sospendere di colpo.</b> La scheda: alla sospensione un rebound «non si può escludere del tutto», controllo attento e, nei critici, un'alternativa" + st("ilo","4.4") + "."
+  };
+  var ESITI = {
+    ok:{ k:"k0", t:"Dose" }, cau:{ k:"k2", t:"Dose, con attenzione" }, rid:{ k:"k3", t:"Dose cambiata" }, no:{ k:"k4", t:"Nessuna dose" },
+    manca:{ k:"kx", t:"—" }, nit:{ k:"k3", t:"Non in commercio in Italia" }, rim:{ k:"k1", t:"Vedi il Tool Sotatercept" }, test:{ k:"k1", t:"Dose del test" }, vuoto:{ k:"kx", t:"—" }
+  };
+  function classeNota(k) { return k === "no" ? "stop" : (k === "ok" ? "ok" : ((k === "manca" || k === "nd") ? "spenta" : "")); }
+
+  function disegna() {
+    var s = S(), id = s.far, r = valuta(id, s), F = r.F, c = r.cl, h, i, k;
+    var tipo = F ? (F.tipo || "cura") : "";
+    var cura = tipo === "cura";
+
+    /* campi che contano per questo farmaco */
+    mostra("rigaResp", !!(F && F.ccb), "riga");
+    mostra("rigaInd", !!(F && F.ind), "riga");
+    mostra("blocco2", cura || tipo === "test");
+    mostra("campiPaz", cura);
+    mostra("rigaEgfr", !!(F && F.egfr), "riga");
+    mostra("blocco3", cura);
+    mostra("rigaMom", !!(F && F.tr), "riga");
+    mostra("rigaTx", !!(F && F.tr && !(F.trPre && s.mom === "corso")), "riga");
+    mostra("chkBil", !!(F && F.bil && s.mom === (F.trPre ? "pre" : "corso")), "chk" + (s.bil ? " on" : ""));
+    if (F && F.bil) el("txBil").innerHTML = F.bil;
+    mostra("chkSint", !!(F && F.sint && s.mom === "corso"), "chk" + (s.sint ? " on" : ""));
+    mostra("blocco4", cura && s.sesso === "f");
+    mostra("blocco5", cura && !!INTER[id]);
+    el("chkDial").className = "chk" + (s.dialisi ? " on" : "");
+    var inLista = {}, L = INTER[id] || [];
+    for (i = 0; i < L.length; i++) for (k = 0; k < L[i].c.length; k++) inLista[L[i].c[k]] = true;
+    if (id === "treprostinil") inLista.prostanoide = true;
+    for (k in COMED) if (COMED.hasOwnProperty(k)) el("lb_" + k).className = "chk" + (inLista[k] ? "" : " hide") + (s.comed[k] ? " on" : "");
+    el("txComed").innerHTML = F ? "Si vedono solo quelli che per " + F.nome.toLowerCase() + " cambiano qualcosa. Nessuna casella spuntata vuol dire che nessuno di questi è in corso." + (r.ped ? " Gli studi d'interazione sono solo negli adulti." : "") : "";
+
+    /* eco dei campi */
+    el("vEta").textContent = s.eta === null ? "—" : (inScala(s.eta, "eta") ? (s.eta < SOGLIE.adulto ? "bambino" : "adulto") : "fuori scala");
+    el("vPeso").textContent = s.peso === null ? "—" : (inScala(s.peso, "peso") ? "ok" : "fuori scala");
+    el("vAlt").textContent = s.alt === null ? "—" : (inScala(s.alt, "alt") ? (c.bmi !== null ? "BMI " + nf(c.bmi) : "ok") : "fuori scala");
+    el("vTx").textContent = s.tx === null ? "—" : (inScala(s.tx, "tx") ? (s.tx > 3 ? "sopra 3 × LSN" : "≤ 3 × LSN") : "fuori scala");
+
+    /* 1 · il farmaco */
+    h = "";
+    if (F) {
+      h += '<div class="esito"><span class="big">' + F.nome + '</span> <span class="pg">' + F.sott + "</span></div>";
+      if (F.s3) { var pp = []; for (i = 0; i < F.s3.length; i++) pp.push(F.s3[i][0] + " " + corPill(F.s3[i][1], F.s3[i][2])); h += rigaD("Tab. S3", pp.join(" · ") + pg(S3) + " È l'efficacia del farmaco usato da solo, non un invito a usarlo da solo; quando e con che cosa: Tool Terapia PAH."); }
+      if (F.ccb) h += rigaD("Rec. Table 7", CCB_RT);
+      if (tipo === "test") h += rigaD("Rec. Table 1", "Test nelle sole IPAH, HPAH e DPAH, per trovare i candidati al calcioantagonista, " + corPill("I","B") + ", in un centro per l'IP " + corPill("I","C") + "; con ossido nitrico inalatorio, iloprost inalatorio o epoprostenolo e.v. " + corPill("I","C") + "; nelle altre PAH e nei gruppi 2–5 " + corPill("III","C") + pg(RT1) + ". Come si legge il test: Tool Cateterismo IP.");
+      if (F.it) h += rigaD("In Italia", F.it + pg(AIFA) + ".");
+      if (tipo === "nit") h += rigaD("In Italia", "non in commercio" + pg(AIFA) + ".");
+    } else h = nota("spenta", "Scegli un farmaco.");
+    el("outFar").innerHTML = h;
+
+    /* 2 · rene */
+    h = "";
+    if (cura) {
+      if (r.ped) h += "";
+      else if (c.clcr !== null && id !== "selexipag") {
+        h += '<div class="esito">' + chip(c.clcr < 30 ? "k4" : (c.clcr < 60 ? "k3" : "k1"), "ClCr " + nf(c.clcr) + " mL/min") + ' <span class="pg">Cockcroft-Gault sul peso reale, ' + nf(s.peso) + " kg, che decide" + (c.agg !== null ? " · sull'aggiustato, " + nf(c.pesoAgg) + " kg (BMI " + nf(c.bmi) + "), sarebbe " + nf(c.agg) : "") + "</span></div>";
+        if (c.dial) h += nota("info", "In dialisi la clearance non si usa: vale la regola della dialisi.");
+      }
+      if (r.rene) h += nota(classeNota(r.rene.k), r.rene.t);
+      if (r.fra !== null) h += nota("", "<b>Al confine:</b> fra peso reale e peso aggiustato passa la soglia di " + r.fra + " mL/min. Decide il peso reale; la scelta è clinica.");
+      if (!r.ped && c.clcr !== null && s.alt === null) h += '<p class="pg" style="margin-top:6px">Altezza non indicata: il BMI non si calcola, e la clearance sul peso aggiustato non si mostra.</p>';
+    }
+    el("outRene").innerHTML = h;
+
+    /* 3 · fegato */
+    h = "";
+    if (cura && r.feg) {
+      h += nota(classeNota(r.feg.k), r.feg.t);
+      if (id === "bosentan") {
+        var t3 = s.mom === "corso" && s.tx !== null;
+        h += rigaD("Le soglie in terapia", "<b>&gt; 3 e ≤ 5 × LSN</b> conferma, poi caso per caso, almeno ogni 2 settimane · <b>&gt; 5 e ≤ 8 × LSN</b> conferma, poi sospendere · <b>&gt; 8 × LSN</b>, o sintomi: sospendere e non riprendere mai" + st("bos","4.4") + "." + (t3 ? "" : ""));
+      }
+    }
+    el("outFeg").innerHTML = h;
+
+    /* 4 · gravidanza */
+    el("outPreg").innerHTML = (cura && r.preg && r.preg.t) ? nota(classeNota(r.preg.k), r.preg.t) : "";
+
+    /* 5 · interazioni */
+    h = "";
+    if (cura) {
+      for (i = 0; i < r.inter.length; i++) h += nota(r.inter[i].k === "stop" ? "stop" : (r.inter[i].k === "info" ? "info" : ""), r.inter[i].t);
+      if (!r.inter.length && INTER[id]) h += nota("spenta", "Nessuno di questi farmaci indicato.");
+    }
+    el("outInt").innerHTML = h;
+
+    /* esito */
+    var E = ESITI[r.esito];
+    h = '<div class="esito" id="esitoChip">' + chip(E.k, E.t) + (r.ped && F && tipo === "cura" ? ' <span class="pg">bambino, ' + nf(s.eta, 0) + " anni</span>" : "") + "</div>";
+    if (r.esito === "vuoto") h = nota("spenta", "Scegli un farmaco.");
+    if (r.esito === "nit") {
+      h += nota("", "<b>Non in commercio in Italia.</b> " + F.perche);
+      if (F.s3) h += rigaD("Nella fonte, per informazione", F.ini + " → " + F.ber + pg(T19) + ".");
+      else if (id === "mt") h += rigaD("Dalla scheda, per informazione", F.ini + "; " + F.ber + st("mt","4.2") + ".");
+    }
+    if (r.esito === "rim") h += nota("info", F.perche);
+    if (r.esito === "test") {
+      h += rigaD("Dose", "<b>" + F.ini + "</b>" + pg(T12) + ".");
+      h += rigaD("Come", F.ber + pg(T12) + ".");
+      h += nota("", "Si fa nel cateterismo destro, in un centro per l'IP" + pg(RT1) + ". Nessuna scheda ha il test fra le indicazioni: la dose è della Tab. 12.");
+    }
+    if (r.esito === "manca") h += nota("spenta", "<b>Mancano:</b> " + r.manca.join(" · ") + ". Ognuno di questi campi decide se la dose esiste o quale è.");
+    for (i = 0; i < r.stop.length; i++) h += nota("stop", r.stop[i]);
+    if (r.esito === "no" && r.manca.length && F && !F.tipo) h += nota("spenta", "Mancano anche: " + r.manca.join(" · ") + ".");
+    if (r.esito === "no" && REBOUND[id]) h += nota("", REBOUND[id]);
+    if (r.esito === "ok" || r.esito === "cau" || r.esito === "rid") {
+      h += '<div class="big" id="doseGrande">' + r.ini + " → " + r.ber + "</div>";
+      if (r.ped && r.bamb) h += rigaD("Bambino", r.bamb.t);
+      if (F.ccb) h += nota("", r.ber === F.ber ? "<b>Oltre il tetto della scheda:</b> il bersaglio è quello della Tab. 19; la scheda si ferma più in basso, e non ha l'indicazione nell'IP (sotto). Solo in chi risponde al test, titolato, con il controllo a 3–4 mesi" + pg(RT7) + "." : "<b>Qui il bersaglio alto della Tab. 19 non si scrive:</b> per questo paziente vale la riga della scheda, e quanto salire lo decide il centro. Solo in chi risponde al test, titolato, con il controllo a 3–4 mesi" + pg(RT7) + ".");
+      if (r.rene && r.rene.k === "rid") h += nota("", r.rene.t);
+      if (r.feg && r.feg.k === "rid") h += nota("", r.feg.t);
+      for (i = 0; i < r.inter.length; i++) if (r.inter[i].k === "mod") h += nota("", r.inter[i].t);
+      var inf = infus(id, s, r);
+      if (inf) h += rigaD("Per questo peso", inf);
+      for (i = 0; i < r.avvisi.length; i++) h += nota("", r.avvisi[i]);
+      if (r.rene && (r.rene.k === "cau" || r.rene.k === "nd")) h += nota("", r.rene.t);
+      if (r.fra !== null) h += nota("", "<b>Al confine:</b> fra peso reale e peso aggiustato passa la soglia di " + r.fra + " mL/min. Decide il peso reale; la scelta è clinica.");
+      if (r.feg && r.feg.k === "cau") h += nota("", r.feg.t);
+      if (r.preg && r.preg.k === "cau") h += nota("", r.preg.t);
+      var nw = 0; for (i = 0; i < r.inter.length; i++) if (r.inter[i].k === "warn") nw++;
+      if (nw) h += nota("", "<b>Interazioni:</b> " + (nw === 1 ? "una riga" : nw + " righe") + " da leggere al passo 5.");
+      if (id === "epoprostenolo" && ((r.rene && r.rene.k === "cau") || (r.feg && r.feg.k === "cau"))) h += nota("", REBOUND.epoprostenolo);
+      if (r.esito === "ok") h += nota("ok", "Nessuna regola di rene, fegato, gravidanza o interazione cambia la dose. Restano le controindicazioni della scheda, sotto, da escludere.");
+    }
+    el("outEsito").innerHTML = h;
+
+    /* la dose nella fonte e nella scheda */
+    h = "";
+    if (F && tipo === "cura") {
+      if (r.esito === "no") h += nota("stop", "<b>Per questo paziente nessuna dose</b> (sopra): le righe qui sotto sono il riferimento generale, e per lui non valgono.");
+      else if (r.ped) h += nota("", "<b>Sono le righe dell'adulto:</b> per questo bambino vale soltanto la dose sopra.");
+      h += rigaD(id === "sildenafil_ev" ? "Scheda" : "Adulto, Tab. 19", "<b>" + F.ini + "</b> → <b>" + F.ber + "</b>" + (id === "sildenafil_ev" ? "" : pg(T19)) + ". " + F.nota);
+      if (id !== "sildenafil_ev") h += rigaD("Come si legge", NOTA_T19);
+      h += rigaD("Scheda tecnica", F.sch);
+    } else if (F && tipo === "test") {
+      h += rigaD("Tab. 12", "<b>" + F.ini + "</b>: " + F.ber + pg(T12) + ".");
+      h += rigaD("Scheda tecnica", F.sch);
+    } else if (F && tipo === "nit" && F.nota) h += rigaD("Nota", F.nota);
+    else if (F) h += '<p class="pg">Qui non c\'è una dose da dare: la ragione è sopra.</p>';
+    el("outDose").innerHTML = h;
+
+    /* controindicazioni, monitoraggio */
+    el("outCi").innerHTML = F && F.ci ? '<p style="font-size:13.5px">' + F.ci.charAt(0).toUpperCase() + F.ci.slice(1) + "</p>" : '<p class="pg">—</p>';
+    h = "";
+    if (F && F.mon) h += '<p style="font-size:13.5px">' + F.mon.charAt(0).toUpperCase() + F.mon.slice(1) + "</p>";
+    if (F && F.ccb) h += nota("info", "Rivalutazione completa dopo 3–4 mesi, cateterismo compreso, I C. Si tengono le alte dosi in classe OMS I–II con netto miglioramento emodinamico, I C; se no, terapia della PAH, I C, e il calcioantagonista si può tenere, IIa C" + pg(RT7) + ". Si legge nel Tool Cateterismo IP e nel Tool Terapia PAH.");
+    el("outMon").innerHTML = h || '<p class="pg">—</p>';
+
+    /* incoerenze */
+    var inc = incoerenze(id, s, r);
+    h = "";
+    for (i = 0; i < inc.length; i++) h += nota("spenta", inc[i]);
+    el("outInc").innerHTML = h || '<p class="pg">—</p>';
+
+    /* limiti */
+    var lim = [];
+    lim.push("Dice la dose di un farmaco già scelto: che cosa dare, in che ordine e con che cosa è del <b>Tool Terapia PAH</b>, e la decisione è del centro.");
+    lim.push("Dose della Tab. 19 nell'adulto, regole della scheda tecnica. Dove la scheda dice «non studiato», «nessun dato» o non ha uno schema (rene, fegato, età) non c'è una dose: decide lo specialista (regola del medico). Uniche eccezioni l'epoprostenolo e il treprostinil nella CTEPH, che si titolano sull'effetto e hanno il rebound: la dose resta, con attenzione (decisione del medico, 01/11/2026). «Insufficienza renale» senza soglia = ClCr &lt; 60; «severa» o «grave» senza numero = ClCr &lt; 30, letture del progetto.");
+    lim.push("Clearance di Cockcroft-Gault sul <b>peso reale, che decide</b>; con BMI ≥ 30 accanto quella sul peso aggiustato (Devine + 0,4 × l'eccesso), con un avviso se fra le due passa una soglia. Il sotatercept e il selexipag restano in eGFR, come le loro schede.");
+    if (r.ped) lim.push("<b>Bambino:</b> dose solo dall'età minima della scheda e dove la scheda ha la PAH; i tetti della scheda valgono; le posologie suggerite della Tab. 22 non diventano una dose. Il rene non si stima: chi è il bambino lo sa lo specialista. Il progetto pediatrico è Distillati-cardio-pediatria.");
+    if (s.sesso === "f" && cura) lim.push("La gravidanza, nella PAH, si gestisce in un centro: Rec. Table 6" + pg(RT6) + ".");
+    lim.push("Le caselle del passo 5 portano i farmaci che la Tab. S4 e la scheda nominano: un altro inibitore o induttore dello stesso enzima si cerca nella scheda.");
+    lim.push("Età avanzata: dove la scheda parla degli anziani senza dire l'età, da 65 anni, lettura nostra.");
+    lim.push("Non considera pressione e frequenza: le soglie della scheda per iniziare e titolare stanno nelle controindicazioni e nel monitoraggio.");
+    lim.push("Disponibilità in Italia e carenze: Banca dati AIFA al 27/10/2026; cambiano in fretta.");
+    el("limiti").innerHTML = "<li>" + lim.join("</li><li>") + "</li>";
+
+    /* barra */
+    function bar(bid, kk, x) { var b = el(bid); b.className = "cat " + kk; b.innerHTML = x; }
+    bar("barFar", F ? "k1" : "kx", F ? F.nome : "—");
+    bar("barEsito", E.k, E.t);
+    if (!cura) bar("barRene", "kx", "—");
+    else if (r.ped) bar("barRene", "kx", "bambino: non stimato");
+    else if (c.dial) bar("barRene", "k4", "dialisi");
+    else if (id === "selexipag") bar("barRene", s.egfr === null ? "kx" : (s.egfr < 30 ? "k4" : "k1"), s.egfr === null ? "—" : "eGFR " + nf(s.egfr, 0));
+    else if (c.clcr !== null) bar("barRene", c.clcr < 30 ? "k4" : (c.clcr < 60 ? "k3" : "k1"), "ClCr " + nf(c.clcr));
+    else bar("barRene", "kx", "—");
+  }
+
+  /* le caselle dei farmaci in corso, una volta sola */
+  (function () {
+    var box = el("boxComed"), k, h = "";
+    for (k in COMED) if (COMED.hasOwnProperty(k))
+      h += '<label class="chk hide" id="lb_' + k + '"><input type="checkbox" id="cm_' + k + '"><span class="tx">' + COMED[k] + "</span></label>";
+    box.innerHTML = h;
+  })();
+
+  document.addEventListener("input", disegna);
+  document.addEventListener("change", disegna);
+  el("azzera").addEventListener("click", function () {
+    var ins = document.querySelectorAll("input"), i;
+    for (i = 0; i < ins.length; i++) {
+      if (ins[i].type === "checkbox" || ins[i].type === "radio") ins[i].checked = false;
+      else ins[i].value = "";
+    }
+    el("far").value = ""; el("preg").value = "";
+    el("ucr_mg").checked = true;
+    disegna();
+    window.scrollTo(0, 0);
+  });
+
+  window.FAR_MOTORE = { valuta:valuta, clearance:clearance, sogliaFra:sogliaFra, pesoIdeale:pesoIdeale, infus:infus, FARMACI:FARMACI, INTER:INTER, COMED:COMED, GRAN:GRAN, SOGLIE:SOGLIE };
+  disegna();
+})();
+</script>
+<script data-iphone="web">
+// Solo da un indirizzo https, cioe' dalla pagina pubblicata: aperto come file
+// il tool non cerca ne' manifest ne' service worker, che accanto al file non
+// ci sono. Un errore qui non deve fermare niente: e' un di piu'.
+(function(){
+if(location.protocol!=="https:") return;
+try{
+  var t=document.getElementsByTagName("head")[0];
+  var m=document.createElement("link"); m.rel="manifest"; m.href="manifest.webmanifest";
+  var i=document.createElement("link"); i.rel="apple-touch-icon"; i.href="icona-180.png";
+  t.appendChild(m); t.appendChild(i);
+  if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js")["catch"](function(){});
+}catch(e){}
+})();
+</script>
+<script data-iphone="fine">document.documentElement.className+=" motore-ok";</script>
+</body>
+</html>
